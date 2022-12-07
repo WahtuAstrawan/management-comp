@@ -1,8 +1,8 @@
 # Tugas-Besar-Liangga-Wahtu
 
-Nama Program   : Knowledge Warrior
+Nama Program   : LIANWA MANAGEMENT
 
-Tujuan Program : Memperluas wawasan dan ilmu dengan cara yang menyenangkan :)
+Tujuan Program : Sebagai kasir dan stok barang dari Toko hardware komputer
 
 
 Nama : I Putu Liangga Ristiana Putra
