@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#define RED "\033[31m"
+#define COLOR_OFF "\e[m"
 
 void input_int(int *var, char *intruksi) //
 {
@@ -82,6 +84,26 @@ void input_username(char *var)
         }
 
         printf("\t\tUsername Tidak Boleh ada spasi\n");
+    }
+}
+
+int validasiInteger()
+{
+    while (true)
+    {
+        char input[100], notValid;
+        int valid;
+        scanf("%[^\n]", input);
+        fflush(stdin);
+        if (sscanf(input, "%d%c", &valid, &notValid) == 1)
+        {
+            return valid;
+            break;
+        }
+        else
+        {
+            printf(RED "\nMaaf input salah, Mohon masukkan angka ! \n" COLOR_OFF);
+        }
     }
 }
 
