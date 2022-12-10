@@ -1,0 +1,2 @@
+AMD Ryzen 7 2700X,3227000,5
+Intel Core i9-9900K,5650000,7
