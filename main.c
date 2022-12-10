@@ -296,7 +296,7 @@ void processor()
     }
     else if (yakin == 'X')
     {
-        totalTransaksi(x[n].nama, x[n].harga, x[n].jumlah, x[n].totalHarga);
+        totalTransaksi(*x[n].nama, x[n].harga, x[n].jumlah, x[n].totalHarga);
         n++;
     }
 }
@@ -322,7 +322,7 @@ void totalTransaksi(char *nama, int harga, int jumlah, int total)
         else
         {
             kembalian = bayar - total;
-            printf(BOLD "\t\t\t\t Terima Kasih Atas Pembelian Anda !" COLOR_OFF);
+            printf(BOLD "\t\t\t\t Terima Kasih Atas Pembelian Anda !\n" COLOR_OFF);
             printf(BOLD "\t\t\t\t Kembalian Anda : Rp.%d,- " COLOR_OFF, kembalian);
         }
     } while (bayar < total);
@@ -428,7 +428,7 @@ int validasiInteger()
         char input[100], notValid;
         int valid;
         scanf("%[^\n]", input);
-        fflush(stdin);
+        getchar();
         if (sscanf(input, "%d%c", &valid, &notValid) == 1)
         {
             return valid;
