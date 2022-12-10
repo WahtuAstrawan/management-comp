@@ -31,7 +31,7 @@ void login()//menu login
             i++;
         }
 
-        if (!strcmp(username, "admin"))
+        if (!strcmp(username, "kasir"))
         {
             inputPassword(1);//input password, penjelasan parameter ada di fungsinya
             printf("lolos");// disini ganti pake subprogram admin
@@ -89,7 +89,7 @@ int checkPassword(char *PasswordInserted, int IndexUsername)
     {
         fclose(fAkun);
         fAkun = fopen("akunPass.txt", "w");
-        fprintf(fAkun,"admin\ngudang\nmanager\n");
+        fprintf(fAkun,"kasir\ngudang\nmanager\n");
         fclose(fAkun);
         fAkun = fopen("akunPass.txt", "r");
     }
