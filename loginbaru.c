@@ -3,13 +3,19 @@
 #include <string.h>
 #include <ctype.h>
 
+#define COLOR_OFF "\e[m"
+#define RED "\033[31m"
+
 int checkPassword(char *usernameInserted, char *jabatan),
-    InputUsername(char *user);
+    inputUsername(char *user),
+    cekUser(char *nama),
+    inputPassword(char *pass);
 void login(),
     AdminSubProgram(),
     range_int(int *var, int range1, int range2, char *intruksi),
     input_int(int *var, char *intruksi),
-    AdminCreateAccount();
+    AdminCreateAccount(),
+    addAcc(char *jabatan, char *username, char *password);
 
 int main(int argc, char const *argv[])
 {
@@ -21,7 +27,7 @@ int main(int argc, char const *argv[])
 
 void login()
 {
-    system("cls");
+    // system("cls");
     char usernameInserted[21];
     char subprogram[8];
     while (1)
@@ -85,10 +91,12 @@ int checkPassword(char *usernameInserted, char *jabatan)
                 gets(passwordInserted);
                 if (!strcmp(passwordInserted, "0"))
                 {
+                    fclose(fAkun);
                     login();
                 }
                 else if (!strcmp(password, passwordInserted))
                 {
+                    fclose(fAkun);
                     return 1;
                 }
                 else
@@ -100,6 +108,7 @@ int checkPassword(char *usernameInserted, char *jabatan)
 
     } while (!feof(fAkun));
     printf("username tidak ditemukan!\n");
+    fclose(fAkun);
     return 0;
 }
 
@@ -178,6 +187,8 @@ void range_int(int *var, int range1, int range2, char *intruksi) // membatasi in
 void AdminCreateAccount()
 {
     int Pilihan;
+    int ulang;
+
     char jabatan[8];
     char username[21];
     char password[21];
@@ -204,16 +215,13 @@ void AdminCreateAccount()
     switch (Pilihan)
     {
     case 1:
-        printf("||                Akun Kasir                 ||\n");
         strcpy(jabatan, "kasir");
         break;
     case 2:
-        printf("||                Akun Gudang               ||\n");
         strcpy(jabatan, "gudang");
         break;
 
     case 3:
-        printf("||               Akun Manager               ||\n");
         strcpy(jabatan, "manager");
         break;
 
@@ -225,19 +233,78 @@ void AdminCreateAccount()
         break;
     }
 
-    printf("||                                          ||\n");
-    printf("||   Format Username :                      ||\n");
-    printf("||   1. Hanya Berupa Angka                  ||\n");
-    printf("||   1. Terdiri dari Minimal 8 karakter     ||\n");
-    printf("||   1. dan maksimal 20 karakter            ||\n");
-    printf("||                                          ||\n");
-    printf("||                   masuk 0 untuk Kembali  ||\n");
-    printf("==============================================\n");
-    printf("  Masukan Username anda\n");
-    printf("  >> ");
+    while (1)
+    {
+        system("cls");
+        printf("==============================================\n");
+        printf("...............SUB PROGRAM ADMIN..............\n");
+        printf("==============================================\n");
+        printf("     Jabatan : %s                          \n", jabatan);
+        printf("==============================================\n"); ///:
+        printf("||                                          ||\n");
+        printf("||   Format Username :                      ||\n");
+        printf("||   1. Hanya Berupa Angka                  ||\n");
+        printf("||   2. Terdiri dari Minimal 5 karakter     ||\n");
+        printf("||      dan maksimal 20 karakter            ||\n");
+        printf("||                                          ||\n");
+        printf("||                 Masukan 0 untuk kembali  ||\n");
+        printf("==============================================\n");
+        if (inputUsername(username))
+        {
+            AdminCreateAccount();
+            exit(0);
+        }
+
+        // masukan password akun yang akan dibuat
+        system("cls");
+        printf("==============================================\n");
+        printf("...............SUB PROGRAM ADMIN..............\n");
+        printf("==============================================\n"); ///:
+        printf("     Jabatan  : %s                          \n", jabatan);
+        printf("     Username : %s                          \n", username);
+        printf("==============================================\n");
+        printf("||                                          ||\n");
+        printf("||   Format Password :                      ||\n");
+        printf("||      Terdiri dari Minimal 8 karakter     ||\n");
+        printf("||      dan maksimal 20 karakter            ||\n");
+        printf("||                                          ||\n");
+        printf("||                 Masukan 0 untuk kembali  ||\n");
+        printf("==============================================\n");
+        if (inputPassword(password))
+        {
+            continue;
+        }
+        break;
+    }
+
+    while (1)    
+    {
+        // masukan password akun yang akan dibuat
+        system("cls");
+        printf("==============================================\n");
+        printf("...............SUB PROGRAM ADMIN..............\n");
+        printf("==============================================\n"); ///:
+        printf("     Jabatan  : %s                          \n", jabatan);
+        printf("     Username : %s                          \n", username);
+        printf("     Password : %s                          \n", password);
+        printf("==============================================\n");
+        printf("  [1]Buat Akun                       [0]ulang \n");
+        range_int(&ulang,0,1," >> ");
+        if (ulang == 1)
+        {
+            break;
+        }else if (ulang == 0)
+        {
+            AdminCreateAccount();
+            exit(0);
+        }else{
+            continue;
+        }
+    };
+    addAcc(jabatan, username, password);
 }
 
-int InputUsername(char *user)
+int inputUsername(char *user)
 {
     char newUsername[21];
     int i, status;
@@ -250,6 +317,11 @@ int InputUsername(char *user)
 
         fflush(stdin);
         gets(newUsername);
+        if (!strcmp(newUsername, "0"))
+        {
+            return 1;
+        }
+
         if (strlen(newUsername) > 20 || strlen(newUsername) < 5)
         {
             printf("\t\tUsername Invalid!!\n\n");
@@ -266,12 +338,101 @@ int InputUsername(char *user)
             }
             i++;
         }
+
+        if (cekUser(newUsername))
+        {
+            printf("\t\tUsername Sudah Digunakan!!\n\n");
+            continue;
+            ;
+        }
+
         if (status == 0)
         {
             break;
         }
     }
-    
-    strcpy(user,newUsername);
+
+    strcpy(user, newUsername);
     return 0;
+}
+
+int cekUser(char *nama)
+{
+    char jabatan[21];
+    char password[21];
+    char username[20];
+
+    FILE *fAkun = fopen("akunPass.txt", "r");
+
+    do
+    {
+        fscanf(fAkun, "%[^,],%[^,],%[^\n]\n", jabatan, username, password);
+        if (!strcmp(username, nama))
+        {
+            fclose(fAkun);
+            return 1;
+        }
+
+    } while (!feof);
+
+    fclose(fAkun);
+    return 0;
+}
+
+int inputPassword(char *pass)
+{
+    char newPassword[21], confirm[21];
+    int status;
+    while (1)
+    {
+        status = 0;
+        printf("  Masukan Password anda\n  >> ");
+        // printf("  >> ");
+        fflush(stdin);
+        gets(newPassword);
+        if (!strcmp(newPassword, "0"))
+        {
+            return 1;
+        }
+
+        if (strlen(newPassword) > 20 || strlen(newPassword) < 8)
+        {
+            printf("\t\tpassword invalid\n");
+            continue;
+        }
+
+        while (1)
+        {
+            printf("  Konfirmasi Password\n  >> ");
+
+            fflush(stdin);
+            gets(confirm);
+            if (!strcmp(confirm, "0"))
+            {
+                status++;
+                break;
+                ;
+            }
+            else if (strcmp(confirm, newPassword))
+            {
+                printf("\t\tPassword Tidak Sama!\n\n");
+                continue;
+            }
+            break;
+        }
+
+        if (status == 0)
+        {
+            break;
+        }
+    }
+    strcpy(pass, newPassword);
+    return 0;
+}
+
+void addAcc(char *jabatan, char *username, char *password){
+    FILE *fAkun = fopen("akunPass.txt", "a");
+
+    fprintf(fAkun, "%s,%s,%s\n",jabatan,username,password);
+    fclose(fAkun);
 }
