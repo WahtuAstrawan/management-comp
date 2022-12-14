@@ -19,9 +19,10 @@ void login(),
     input_int(int *var, char *intruksi),
     AdminCreateAccount(),
     AdminEditAccount(),
+    AdminDeleteAccount(),
     addAcc(char *jabatan, char *username, char *password);
 
-int main(int argc, char const *argv[])
+int main()
 {
 
     login();
@@ -30,8 +31,17 @@ int main(int argc, char const *argv[])
 }
 
 void login()
+/*  Pembuat : Liangga
+    Tanggal : 14/12/2022
+    Revisi  : -
+
+    Catatan : 
+    fungsi ini digunakan untuk login akun
+    kemudian memanggil subprogram sesuai
+    dengan jabatan akun tersebut
+*/ 
 {
-    // system("cls");
+    //system("cls");
     char usernameInserted[21];
     char subprogram[8];
     while (1)
@@ -40,32 +50,49 @@ void login()
         printf(">> ");
         gets(usernameInserted);
 
-        if (checkPassword(usernameInserted, subprogram))
+        if (checkPassword(usernameInserted, subprogram))// melakukan pengencekan password akun tersebut
         {
-            if (!strcmp(subprogram, "admin"))
+            if (!strcmp(subprogram, "admin"))// sub program admin
             {
                 AdminSubProgram();
             }
-            else if (!strcmp(subprogram, "kasir"))
+            else if (!strcmp(subprogram, "kasir"))// sub program kasir
             {
                 AdminSubProgram();
             }
-            else if (!strcmp(subprogram, "gudang"))
+            else if (!strcmp(subprogram, "gudang"))// sub program gudang
             {
                 AdminSubProgram();
             }
-            else if (!strcmp(subprogram, "manager"))
+            else if (!strcmp(subprogram, "manager"))// sub program manager
             {
                 AdminSubProgram();
             }
 
-            printf("ada sub program tidak diketahui");
+            printf("ada sub program tidak diketahui");// hanya untuk berjaga jaga saat ada subprogram aneh yang masuk
             exit(0);
         }
     }
 }
 
 int checkPassword(char *usernameInserted, char *jabatan)
+/*  Pembuat : Liangga
+    Tanggal : 14/12/2022
+    Revisi  : -
+
+    Catatan : 
+    fungsi ini digunakan untuk mengecek password
+    dari akun yang diinput sekaligus ketersedian
+    akun
+
+    parameter :
+    usernameInserted (username yang diinputkan)
+    jabatan (pada fungsi ini, akan dimasukkan jabatan akun tersebut)
+
+    return :
+    1 (password benar)
+    0 (akun tidak ada)
+*/ 
 {
     char passwordInserted[21];
     char password[21];
@@ -117,17 +144,29 @@ int checkPassword(char *usernameInserted, char *jabatan)
 }
 
 void AdminSubProgram()
+/*  Pembuat : Liangga
+    Tanggal : 14/12/2022
+    Revisi  : -
+
+    Catatan : 
+    - prosedur ini merupakan sub program admin
+    - prosedur ini akan dipanggil saat ada username jabatan admin login
+    - memiliki 3 wewenang, membuat, mengedit, dan menghapus akun
+    - prosedur ini akan memanggil prosedur sesuai pilihan user
+*/ 
 {
     int Pilihan;
     system("cls");
     printf("==============================================\n");
     printf("...............SUB PROGRAM ADMIN..............\n");
     printf("==============================================\n");
+    printf("||                                          ||\n");
     printf("|| [1] Buat Akun                            ||\n");
-    printf("|| [2] Hapus Akun                           ||\n");
-    printf("|| [3] Edit Akun                            ||\n");
+    printf("|| [2] Edit Akun                            ||\n");
+    printf("|| [3] Hapus Akun                           ||\n");
     printf("|| [4] log out                              ||\n");
-    printf("||                               [0] Keluar ||\n");
+    printf("||                       [0] Keluar Program ||\n");
+    printf("||                                          ||\n");
     printf("==============================================\n");
     range_int(&Pilihan, 0, 4, ">> ");
     switch (Pilihan)
@@ -140,10 +179,11 @@ void AdminSubProgram()
         exit(0);
         break;
     case 2:
+        AdminEditAccount();
         exit(0);
         break;
     case 3:
-        AdminEditAccount();
+        AdminDeleteAccount();
         exit(0);
         break;
     case 4:
@@ -158,38 +198,18 @@ void AdminSubProgram()
     exit(0);
 }
 
-void input_int(int *var, char *intruksi) //
-{
-    char buff[1024];
-    char cek;
-
-    while (1)
-    {
-        printf("%s", intruksi);
-        fflush(stdin);
-        if (fgets(buff, sizeof(buff), stdin) != NULL)
-        {
-            if (sscanf(buff, "%d %c", var, &cek) == 1)
-            {
-                break;
-            }
-        }
-        printf("\t\t\t Input salah! Silahkan coba lagi\n");
-    }
-}
-void range_int(int *var, int range1, int range2, char *intruksi) // membatasi input
-{
-    while (1)
-    {
-        input_int(var, intruksi);
-        fflush(stdin);
-        if (*var >= range1 && *var <= range2)
-            break;
-        printf("Harap Memilih Menu yang Tersedia!\n");
-    }
-}
 
 void AdminCreateAccount()
+/*  Pembuat : Liangga
+    Tanggal : 14/12/2022
+    Revisi  : -
+
+    Catatan : 
+    - prosedur ini akan membuat sebuah akun
+    - prosedur ini meminta user memilih jabatan baru
+    - prosedur ini meminta user memasukan username dan password baru
+    - Data akun baru akan ditambahkan ke akunPass.txt
+*/ 
 {
     int Pilihan;
     int ulang;
@@ -202,42 +222,6 @@ void AdminCreateAccount()
     {
         AdminSubProgram();
     }
-
-    // // memilih jabatan akun yang akan dibuat
-    // system("cls");
-    // printf("==============================================\n");
-    // printf("...............SUB PROGRAM ADMIN..............\n");
-    // printf("==============================================\n");
-    // printf("||            Tentukan Jabatan Akun         ||\n");
-    // printf("||                                          ||\n");
-    // printf("|| [1] Kasir                                ||\n");
-    // printf("|| [2] Gudang                               ||\n");
-    // printf("|| [3] Manager                              ||\n");
-    // printf("||                              [0] Kembali ||\n");
-    // printf("==============================================\n");
-    // range_int(&Pilihan, 0, 3, ">> ");
-
-    // // masukan username akun yang akan dibuat
-    // switch (Pilihan)
-    // {
-    // case 1:
-    //     strcpy(jabatan, "kasir");
-    //     break;
-    // case 2:
-    //     strcpy(jabatan, "gudang");
-    //     break;
-
-    // case 3:
-    //     strcpy(jabatan, "manager");
-    //     break;
-
-    // case 0:
-    //     AdminSubProgram();
-    //     break;
-    // default:
-    //     printf("pilihan menu terdapat angka diluar menu\n");
-    //     break;
-    // }
 
     while (1)
     {
@@ -309,17 +293,52 @@ void AdminCreateAccount()
         {
             continue;
         }
-    };
+    }
     addAcc(jabatan, username, password);
+
+    system("cls");
+    printf("==============================================\n");
+    printf("...............SUB PROGRAM ADMIN..............\n");
+    printf("==============================================\n");
+    printf("||                                          ||\n");
+    printf("|| Buat Akun Lainnya?                       ||\n");
+    printf("|| [0] Tidak                                ||\n");
+    printf("|| [1] Iya                                  ||\n");
+    printf("||                                          ||\n");
+    printf("==============================================\n");
+    range_int(&ulang, 0, 1, "  >> ");
+    if (ulang == 1)
+    {
+        AdminCreateAccount();
+    }
+    else if (ulang == 0)
+    {
+        AdminSubProgram();
+    }
+    else{
+        printf("\nerror\n");
+        exit(0);
+    }
 }
 void AdminEditAccount()
+/*  Pembuat : Liangga
+    Tanggal : 14/12/2022
+    Revisi  : -
+
+    Catatan : 
+    -   prosedur ini akan mengedit akun sesuai dengan masukan user
+    -   menu edit yaitu mengganti jabatan, username, dan password
+    -   prosedur ini akan membuat sebuah file tempAkun.txt untuk
+        memasukkan data file baru kemudian tempAkun akan
+        berubah menjadi akunPass.txt
+*/ 
 {
     int Pilihan;
     int ulang;
     int status;
 
     char newVariable[21];
-    char akun[21];
+    char akun[1080];
 
     char jabatan[8];
     char username[21];
@@ -331,10 +350,188 @@ void AdminEditAccount()
     printf("...............SUB PROGRAM ADMIN..............\n");
     printf("==============================================\n");
     printf(" Masukan Username Akun Yang Ingin Di Edit\n");
-    printf(" (ketik 0 untuk kembali)\n");
-    printf(" >> \n");
+    printf(" (ketik 0 untuk kembali ke menu admin)\n");
     while (1) // validasi akun yang akan di edit
     {
+        gets(akun);
+        printf(" >> ");
+
+        if (!strcmp(akun, "0"))
+        {
+            AdminSubProgram();
+            exit(0);
+        }
+        else if (!strcmp(akun, "admin"))
+        {
+            printf("\t\t\tadmin tidak bisa diedit!\n");
+            continue;
+        }
+        else if (cekUser(akun))
+        {
+            break;
+        }
+        printf("\t\t\tAkun Tidak Ada!\n");
+    }
+
+    while (1)
+    {
+
+        // memilih menu edit akun
+        status = 0;
+        system("cls");
+        printf("==============================================\n");
+        printf("...............SUB PROGRAM ADMIN..............\n");
+        printf("==============================================\n");
+        printf("  Username :%s\n", akun);
+        printf("==============================================\n");
+        printf("||                                          ||\n");
+        printf("|| [1] Ganti Jabatan Akun                   ||\n");
+        printf("|| [2] Ganti Username                       ||\n");
+        printf("|| [3] Ganti Password                       ||\n");
+        printf("||                              [0] Kembali ||\n");
+        printf("==============================================\n");
+        range_int(&Pilihan, 0, 3, ">> ");
+
+        switch (Pilihan)
+        {
+        case 1:
+            if (gantiJabatan(newVariable))
+            {
+                status++;
+            }
+            break;
+        case 2:
+            if (gantiUsername(newVariable))
+            {
+                status++;
+            }
+            break;
+        case 3:
+            if (gantiPassword(newVariable))
+            {
+                status++;
+            }
+            break;
+        case 0:
+            AdminEditAccount();
+            break;
+        default:
+            break;
+        }
+
+        if (status != 0)
+        {
+            continue;
+        }
+
+        FILE *fAkun, *fTempAkun;
+        fAkun = fopen("akunPass.txt", "r");
+        fTempAkun = fopen("tempAkun.txt", "w");
+        do
+        {
+            fscanf(fAkun, "%[^,],%[^,],%[^\n]\n", jabatan, username, password);
+            if (!strcmp(username, akun))
+            {
+                switch (Pilihan)
+                {
+                case 1:
+                    fprintf(fTempAkun, "%s,%s,%s\n", newVariable, username, password);
+                    break;
+                case 2:
+                    fprintf(fTempAkun, "%s,%s,%s\n", jabatan, newVariable, password);
+                    strcpy(akun, newVariable);
+                    break;
+                case 3:
+                    fprintf(fTempAkun, "%s,%s,%s\n", jabatan, username, newVariable);
+                    break;
+                default:
+                    break;
+                }
+            }
+            else
+            {
+                fprintf(fTempAkun, "%s,%s,%s\n", jabatan, username, password);
+            }
+
+        } while (!feof(fAkun));
+
+        fclose(fAkun);
+        fclose(fTempAkun);
+        remove("akunPass.txt");
+        rename("tempAkun.txt", "akunPass.txt");
+
+        system("cls");
+        printf("==============================================\n");
+        printf("...............SUB PROGRAM ADMIN..............\n");
+        printf("==============================================\n");
+        printf("  Username :%s\n", akun);
+        printf("==============================================\n");
+        printf("||                                          ||\n");
+        printf("|| Tetap Mengedit Akun Ini?                 ||\n");
+        printf("|| [0] Tidak                                ||\n");
+        printf("|| [1] Iya                                  ||\n");
+        printf("||                                          ||\n");
+        printf("==============================================\n");
+        range_int(&ulang, 0, 1, ">> ");
+        if (ulang == 1)
+        {
+            continue;
+        }
+        break;
+    }
+    system("cls");
+    printf("==============================================\n");
+    printf("...............SUB PROGRAM ADMIN..............\n");
+    printf("==============================================\n");
+    printf("||                                          ||\n");
+    printf("|| Edit Akun Lainnya?                      ||\n");
+    printf("|| [0] Tidak                                ||\n");
+    printf("|| [1] Iya                                  ||\n");
+    printf("||                                          ||\n");
+    printf("==============================================\n");
+    range_int(&ulang, 0, 1, "  >> ");
+    if (ulang == 1)
+    {
+        AdminEditAccount();
+    }
+    else if (ulang == 0)
+    {
+        AdminSubProgram();
+    }
+    else{
+        printf("\nerror\n");
+        exit(0);
+    }
+}
+void AdminDeleteAccount()
+/*  Pembuat : Liangga
+    Tanggal : 14/12/2022
+    Revisi  : -
+
+    Catatan : 
+    -   prosedur ini akan menghapus akun yang dimasukkan user
+    -   prosedur ini akan membuat sebuah file tempAkun.txt untuk
+        memasukkan data file baru kemudian tempAkun akan
+        berubah menjadi akunPass.txt
+*/ 
+{
+    char jabatan[8];
+    char username[21];
+    char password[21];
+
+    char akun[1080];
+    int ulang;
+
+    // program meminta user menginput username yang ingin di hapus
+    system("cls");
+    printf("==============================================\n");
+    printf("...............SUB PROGRAM ADMIN..............\n");
+    printf("==============================================\n");
+    printf(" Masukan Username Akun Yang Ingin Di Edit\n");
+    printf(" (ketik 0 untuk kembali ke menu admin)\n");
+    while (1) // validasi ketersedian akun yang akan di hapus
+    {
+        printf(" >> ");
         gets(akun);
 
         if (!strcmp(akun, "0"))
@@ -344,49 +541,73 @@ void AdminEditAccount()
         }
         else if (!strcmp(akun, "admin"))
         {
-            printf("\t\t\tadmin tidak bisa diedit!");
+            printf("\t\t\tadmin tidak bisa dihapus!\n");
             continue;
         }
         else if (cekUser(akun))
         {
             break;
         }
-        printf("\t\t\tAkun Tidak Ada!");
+        printf("\t\t\tAkun Tidak Ada!\n");
     }
 
-    // memilih menu edit akun
-    status = 0;
     system("cls");
     printf("==============================================\n");
     printf("...............SUB PROGRAM ADMIN..............\n");
     printf("==============================================\n");
-    printf("  Username :%s\n",akun);
+    printf("  Username : %s\n", akun);
     printf("==============================================\n");
     printf("||                                          ||\n");
-    printf("|| [1] Ganti Jabatan Akun                   ||\n");
-    printf("|| [2] Ganti Username                       ||\n");
-    printf("|| [3] Ganti Password                       ||\n");
-    printf("||                              [0] Kembali ||\n");
+    printf("|| Anda Yakin Menghapus Akun Ini?           ||\n");
+    printf("|| [0] Tidak                                ||\n");
+    printf("|| [1] Iya                                  ||\n");
+    printf("||                                          ||\n");
     printf("==============================================\n");
-    range_int(&Pilihan, 0, 3, ">> ");
-    
-    switch (Pilihan)
+    range_int(&ulang, 0, 1, "  >> ");
+    if (ulang == 0)
     {
-    case 1:
-        gantiJabatan(newVariable);
-        break;
-    case 2:
-        gantiPassword(newVariable);
-        break;
-    case 3:
-        gantiPassword(newVariable);
-        break;
-    case 0:
-        AdminEditAccount();
-        break;
+        AdminDeleteAccount();
+    }
 
-    default:
-        break;
+    FILE *fAkun, *fTempAkun;
+    fAkun = fopen("akunPass.txt", "r");
+    fTempAkun = fopen("tempAkun.txt", "w");
+    do
+    {
+        fscanf(fAkun, "%[^,],%[^,],%[^\n]\n", jabatan, username, password);
+        if (strcmp(akun, username))
+        {
+            fprintf(fTempAkun, "%s,%s,%s\n", jabatan, username, password);
+        }
+    } while (!feof(fAkun));
+
+    fclose(fAkun);
+    fclose(fTempAkun);
+    remove("akunPass.txt");
+    rename("tempAkun.txt", "akunPass.txt");
+
+    system("cls");
+    printf("==============================================\n");
+    printf("...............SUB PROGRAM ADMIN..............\n");
+    printf("==============================================\n");
+    printf("||                                          ||\n");
+    printf("|| Hapus Akun Lainnya?                      ||\n");
+    printf("|| [0] Tidak                                ||\n");
+    printf("|| [1] Iya                                  ||\n");
+    printf("||                                          ||\n");
+    printf("==============================================\n");
+    range_int(&ulang, 0, 1, "  >> ");
+    if (ulang == 1)
+    {
+        AdminDeleteAccount();
+    }
+    else if (ulang == 0)
+    {
+        AdminSubProgram();
+    }
+    else{
+        printf("\nerror\n");
+        exit(0);
     }
 }
 
@@ -601,4 +822,35 @@ int gantiUsername(char *newUsername)
         exit(0);
     }
     return 0;
+}
+
+void input_int(int *var, char *intruksi) //
+{
+    char buff[1024];
+    char cek;
+
+    while (1)
+    {
+        printf("%s", intruksi);
+        fflush(stdin);
+        if (fgets(buff, sizeof(buff), stdin) != NULL)
+        {
+            if (sscanf(buff, "%d %c", var, &cek) == 1)
+            {
+                break;
+            }
+        }
+        printf("\t\t\t Input salah! Silahkan coba lagi\n");
+    }
+}
+void range_int(int *var, int range1, int range2, char *intruksi) // membatasi input
+{
+    while (1)
+    {
+        input_int(var, intruksi);
+        fflush(stdin);
+        if (*var >= range1 && *var <= range2)
+            break;
+        printf("Harap Memilih Menu yang Tersedia!\n");
+    }
 }
