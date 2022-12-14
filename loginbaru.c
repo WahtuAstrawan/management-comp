@@ -9,12 +9,16 @@
 int checkPassword(char *usernameInserted, char *jabatan),
     inputUsername(char *user),
     cekUser(char *nama),
-    inputPassword(char *pass);
+    inputPassword(char *pass),
+    gantiJabatan(char *newJabatan),
+    gantiUsername(char *newUsername),
+    gantiPassword(char *newPassword);
 void login(),
     AdminSubProgram(),
     range_int(int *var, int range1, int range2, char *intruksi),
     input_int(int *var, char *intruksi),
     AdminCreateAccount(),
+    AdminEditAccount(),
     addAcc(char *jabatan, char *username, char *password);
 
 int main(int argc, char const *argv[])
@@ -139,6 +143,7 @@ void AdminSubProgram()
         exit(0);
         break;
     case 3:
+        AdminEditAccount();
         exit(0);
         break;
     case 4:
@@ -193,45 +198,46 @@ void AdminCreateAccount()
     char username[21];
     char password[21];
 
-    // memilih jabatan akun yang akan dibuat
-    system("cls");
-    printf("==============================================\n");
-    printf("...............SUB PROGRAM ADMIN..............\n");
-    printf("==============================================\n");
-    printf("||            Tentukan Jabatan Akun         ||\n");
-    printf("||                                          ||\n");
-    printf("|| [1] Kasir                                ||\n");
-    printf("|| [2] Gudang                               ||\n");
-    printf("|| [3] Manager                              ||\n");
-    printf("||                              [0] Kembali ||\n");
-    printf("==============================================\n");
-    range_int(&Pilihan, 0, 4, ">> ");
-
-    // masukan username akun yang akan dibuat
-    system("cls");
-    printf("==============================================\n");
-    printf("...............SUB PROGRAM ADMIN..............\n");
-    printf("==============================================\n"); ///:
-    switch (Pilihan)
+    if (gantiJabatan(jabatan))
     {
-    case 1:
-        strcpy(jabatan, "kasir");
-        break;
-    case 2:
-        strcpy(jabatan, "gudang");
-        break;
-
-    case 3:
-        strcpy(jabatan, "manager");
-        break;
-
-    case 0:
         AdminSubProgram();
-        break;
-    default:
-        printf("pilihan menu terdapat angka diluar menu\n");
-        break;
     }
+
+    // // memilih jabatan akun yang akan dibuat
+    // system("cls");
+    // printf("==============================================\n");
+    // printf("...............SUB PROGRAM ADMIN..............\n");
+    // printf("==============================================\n");
+    // printf("||            Tentukan Jabatan Akun         ||\n");
+    // printf("||                                          ||\n");
+    // printf("|| [1] Kasir                                ||\n");
+    // printf("|| [2] Gudang                               ||\n");
+    // printf("|| [3] Manager                              ||\n");
+    // printf("||                              [0] Kembali ||\n");
+    // printf("==============================================\n");
+    // range_int(&Pilihan, 0, 3, ">> ");
+
+    // // masukan username akun yang akan dibuat
+    // switch (Pilihan)
+    // {
+    // case 1:
+    //     strcpy(jabatan, "kasir");
+    //     break;
+    // case 2:
+    //     strcpy(jabatan, "gudang");
+    //     break;
+
+    // case 3:
+    //     strcpy(jabatan, "manager");
+    //     break;
+
+    // case 0:
+    //     AdminSubProgram();
+    //     break;
+    // default:
+    //     printf("pilihan menu terdapat angka diluar menu\n");
+    //     break;
+    // }
 
     while (1)
     {
@@ -240,7 +246,7 @@ void AdminCreateAccount()
         printf("...............SUB PROGRAM ADMIN..............\n");
         printf("==============================================\n");
         printf("     Jabatan : %s                          \n", jabatan);
-        printf("==============================================\n"); ///:
+        printf("==============================================\n");
         printf("||                                          ||\n");
         printf("||   Format Username :                      ||\n");
         printf("||   1. Hanya Berupa Angka                  ||\n");
@@ -277,7 +283,7 @@ void AdminCreateAccount()
         break;
     }
 
-    while (1)    
+    while (1)
     {
         // masukan password akun yang akan dibuat
         system("cls");
@@ -288,20 +294,100 @@ void AdminCreateAccount()
         printf("     Username : %s                          \n", username);
         printf("     Password : %s                          \n", password);
         printf("==============================================\n");
-        printf("  [1]Buat Akun                       [0]ulang \n");
-        range_int(&ulang,0,1," >> ");
+        printf("  [1]Buat Akun                     [0]ulang \n");
+        range_int(&ulang, 0, 1, " >> ");
         if (ulang == 1)
         {
             break;
-        }else if (ulang == 0)
+        }
+        else if (ulang == 0)
         {
             AdminCreateAccount();
             exit(0);
-        }else{
+        }
+        else
+        {
             continue;
         }
     };
     addAcc(jabatan, username, password);
+}
+void AdminEditAccount()
+{
+    int Pilihan;
+    int ulang;
+    int status;
+
+    char newVariable[21];
+    char akun[21];
+
+    char jabatan[8];
+    char username[21];
+    char password[21];
+
+    // program meminta user menginput username yang ingin di edit
+    system("cls");
+    printf("==============================================\n");
+    printf("...............SUB PROGRAM ADMIN..............\n");
+    printf("==============================================\n");
+    printf(" Masukan Username Akun Yang Ingin Di Edit\n");
+    printf(" (ketik 0 untuk kembali)\n");
+    printf(" >> \n");
+    while (1) // validasi akun yang akan di edit
+    {
+        gets(akun);
+
+        if (!strcmp(akun, "0"))
+        {
+            AdminSubProgram();
+            exit(0);
+        }
+        else if (!strcmp(akun, "admin"))
+        {
+            printf("\t\t\tadmin tidak bisa diedit!");
+            continue;
+        }
+        else if (cekUser(akun))
+        {
+            break;
+        }
+        printf("\t\t\tAkun Tidak Ada!");
+    }
+
+    // memilih menu edit akun
+    status = 0;
+    system("cls");
+    printf("==============================================\n");
+    printf("...............SUB PROGRAM ADMIN..............\n");
+    printf("==============================================\n");
+    printf("  Username :%s\n",akun);
+    printf("==============================================\n");
+    printf("||                                          ||\n");
+    printf("|| [1] Ganti Jabatan Akun                   ||\n");
+    printf("|| [2] Ganti Username                       ||\n");
+    printf("|| [3] Ganti Password                       ||\n");
+    printf("||                              [0] Kembali ||\n");
+    printf("==============================================\n");
+    range_int(&Pilihan, 0, 3, ">> ");
+    
+    switch (Pilihan)
+    {
+    case 1:
+        gantiJabatan(newVariable);
+        break;
+    case 2:
+        gantiPassword(newVariable);
+        break;
+    case 3:
+        gantiPassword(newVariable);
+        break;
+    case 0:
+        AdminEditAccount();
+        break;
+
+    default:
+        break;
+    }
 }
 
 int inputUsername(char *user)
@@ -343,7 +429,6 @@ int inputUsername(char *user)
         {
             printf("\t\tUsername Sudah Digunakan!!\n\n");
             continue;
-            ;
         }
 
         if (status == 0)
@@ -369,11 +454,11 @@ int cekUser(char *nama)
         fscanf(fAkun, "%[^,],%[^,],%[^\n]\n", jabatan, username, password);
         if (!strcmp(username, nama))
         {
+
             fclose(fAkun);
             return 1;
         }
-
-    } while (!feof);
+    } while (!feof(fAkun));
 
     fclose(fAkun);
     return 0;
@@ -430,9 +515,90 @@ int inputPassword(char *pass)
     return 0;
 }
 
-void addAcc(char *jabatan, char *username, char *password){
+void addAcc(char *jabatan, char *username, char *password)
+{
     FILE *fAkun = fopen("akunPass.txt", "a");
 
-    fprintf(fAkun, "%s,%s,%s\n",jabatan,username,password);
+    fprintf(fAkun, "%s,%s,%s\n", jabatan, username, password);
     fclose(fAkun);
+}
+
+int gantiJabatan(char *newJabatan)
+{
+    int Pilihan;
+    // memilih jabatan akun yang akan dibuat
+    system("cls");
+    printf("==============================================\n");
+    printf("...............SUB PROGRAM ADMIN..............\n");
+    printf("==============================================\n");
+    printf("||        Tentukan Jabatan Baru Akun        ||\n");
+    printf("||                                          ||\n");
+    printf("|| [1] Kasir                                ||\n");
+    printf("|| [2] Gudang                               ||\n");
+    printf("|| [3] Manager                              ||\n");
+    printf("||                              [0] Kembali ||\n");
+    printf("==============================================\n");
+    range_int(&Pilihan, 0, 3, ">> ");
+    switch (Pilihan)
+    {
+    case 1:
+        strcpy(newJabatan, "kasir");
+        break;
+    case 2:
+        strcpy(newJabatan, "gudang");
+        break;
+    case 3:
+        strcpy(newJabatan, "manager");
+        break;
+    case 0:
+        return 1;
+        break;
+
+    default:
+        printf("oops\n");
+        break;
+    }
+
+    return 0;
+}
+int gantiPassword(char *newPassword)
+{
+
+    system("cls");
+    printf("==============================================\n");
+    printf("...............SUB PROGRAM ADMIN..............\n");
+    printf("==============================================\n");
+    printf("||                                          ||\n");
+    printf("||   Format Password :                      ||\n");
+    printf("||      Terdiri dari Minimal 8 karakter     ||\n");
+    printf("||      dan maksimal 20 karakter            ||\n");
+    printf("||                                          ||\n");
+    printf("||                 Masukan 0 untuk kembali  ||\n");
+    printf("==============================================\n");
+    if (inputPassword(newPassword))
+    {
+        return 1;
+    }
+    return 0;
+}
+int gantiUsername(char *newUsername)
+{
+    system("cls");
+    printf("==============================================\n");
+    printf("...............SUB PROGRAM ADMIN..............\n");
+    printf("==============================================\n");
+    printf("||                                          ||\n");
+    printf("||   Format Username :                      ||\n");
+    printf("||   1. Hanya Berupa Angka                  ||\n");
+    printf("||   2. Terdiri dari Minimal 5 karakter     ||\n");
+    printf("||      dan maksimal 20 karakter            ||\n");
+    printf("||                                          ||\n");
+    printf("||                 Masukan 0 untuk kembali  ||\n");
+    printf("==============================================\n");
+    if (inputUsername(newUsername))
+    {
+        return 1;
+        exit(0);
+    }
+    return 0;
 }
