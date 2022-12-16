@@ -27,6 +27,9 @@ void login(),
     showAllAcc(),
     managerOften(),
     managerProfit(),
+    managerOften(),
+
+    editTempHis(char *barang, int jumlah),
     addAcc(char *jabatan, char *username, char *password),
     date(int *tanggal, int *bulan, int *tahun),
     positif_int(int *var, char *intruksi);
@@ -984,7 +987,7 @@ void positif_int(int *var, char *intruksi)
     {
         input_int(var, intruksi);
         fflush(stdin);
-        if ( *var >= 0)
+        if (*var >= 0)
             break;
         printf("\t\t\tInput Tidak Valid\n");
     }
@@ -1155,6 +1158,8 @@ void managerProfit()
 
     date(&tanggal, &bulan, &tahun);
 
+    printf("%d %d %d\n", tanggal, bulan, tahun);
+    system("pause");
     // printf("%d\n",tahun);
 
     int Pilihan;
@@ -1222,11 +1227,145 @@ void managerProfit()
     } while (!feof(fHis));
 
     printf("\t RP. %d", totalHarga);
+    printf("\n  PPN  : Rp. %.1f\n", (((float)totalHarga) * 0.11));
     fclose(fHis);
+    printf("\n==============================================\n");
+    printf("  [1]kembali                         [0]Menu\n");
+    range_int(&Pilihan, 0, 1, " >> ");
+    switch (Pilihan)
+    {
+    case 1:
+        managerProfit();
+        exit(0);
+        break;
+    case 0:
+        managerSubProgram();
+        exit(0);
+        break;
+    default:
+        break;
+    }
 }
 
 void managerOften()
 {
+
+    int tanggal,
+        bulan,
+        bulanLalu,
+        tahun,
+        dateHis,
+        monHis,
+        yearHis,
+        jumlahBarang,
+        jumlahtarget,
+        harga;
+    char barang[100],
+        barangTarget[100];
+
+    date(&tanggal, &bulan, &tahun);
+
+    int pertama = 0,
+        i,
+        status,
+        data[1080];
+
+    FILE *fHis = fopen("riwayatpembelian.txt", "r"),
+         *read,
+         *app = fopen("riwayatpembelianTemp.txt", "a");
+
+    do
+    {
+
+        fscanf(fHis, "%d,%d,%d,%[^,],%d,%d\n", &dateHis, &monHis, &yearHis, barang, &jumlahBarang, &harga);
+        if (bulan == monHis && tahun == yearHis)
+        {
+
+            if (pertama == 0)
+            {
+
+                fprintf(app, "%s,%d\n", barang, jumlahBarang);
+                fclose(app);
+                pertama++;
+            }
+            else
+            {
+                status = 0;
+                read = fopen("riwayatpembelianTemp.txt", "r");
+                do
+                {
+                    fscanf(read, "%[^,],%d\n", barangTarget, &jumlahtarget);
+                    if (!strcmp(barang, barangTarget))
+                    {
+                        fclose(read);
+                        editTempHis(barang, jumlahBarang);
+                        status++;
+                        break;
+                    }
+
+                } while (!feof(read));
+                if (status == 0)
+                {
+
+                    fclose(read);
+                    app = fopen("riwayatpembelianTemp.txt", "a");
+                    fprintf(app, "%s,%d\n", barang, jumlahBarang);
+                    fclose(app);
+                }
+            }
+        }
+    } while (!feof(fHis));
+
+    read = fopen("riwayatpembelianTemp.txt", "r");
+    app = fopen("sortTemp.txt", "w");
+
+
+
+    //sampe sini tanggal 16
+    fscanf(read, "%[^,],%d\n", barang, &jumlahBarang);
+
+    strcpy(barangTarget, barang);
+    jumlahtarget = jumlahBarang;
+    do
+    {
+        fscanf(read, "%[^,],%d\n", barang, &jumlahBarang);
+        if (jumlahBarang > jumlahtarget)
+        {
+            strcpy(barangTarget, barang);
+            jumlahtarget = jumlahBarang;
+        }
+    } while (!feof(read));
+    printf("%s,%d", barangTarget, jumlahtarget);
+
+    exit(0);
+}
+
+void editTempHis(char *barang, int jumlah)
+{
+    FILE *Read = fopen("riwayatpembelianTemp.txt", "r"),
+         *Add = fopen("TempEditHis.txt", "w");
+
+    char barangTarget[100];
+    int jumlahTarget;
+
+    while (!feof(Read))
+    {
+        fscanf(Read, "%[^,],%d\n", barangTarget, &jumlahTarget);
+
+        if (!strcmp(barang, barangTarget))
+        {
+            jumlahTarget += jumlah;
+            fprintf(Add, "%s,%d\n", barangTarget, jumlahTarget);
+        }
+        else
+        {
+            fprintf(Add, "%s,%d\n", barangTarget, jumlahTarget);
+        }
+    }
+    fclose(Add);
+    fclose(Read);
+    remove("riwayatpembelianTemp.txt");
+    rename("TempEditHis.txt", "riwayatpembelianTemp.txt");
 }
 
 void date(int *tanggal, int *bulan, int *tahun)
