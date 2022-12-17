@@ -1161,10 +1161,6 @@ void managerProfit()
 
     date(&tanggal, &bulan, &tahun);
 
-    printf("%d %d %d\n", tanggal, bulan, tahun);
-    system("pause");
-    // printf("%d\n",tahun);
-
     int Pilihan;
     system("cls");
     printf("==============================================\n");
@@ -1219,6 +1215,8 @@ void managerProfit()
     default:
         break;
     }
+
+    // mulai proses penghitungan
     do
     {
         fscanf(fHis, "%d,%d,%d,%[^,],%d,%d\n", &dateHis, &monHis, &yearHis, barang, &jumlahBarang, &harga);
@@ -1268,10 +1266,60 @@ void managerOften()
 
     date(&tanggal, &bulan, &tahun);
 
+    int Pilihan;
+    system("cls");
+    printf("==============================================\n");
+    printf("..............SUB PROGRAM MANAGER.............\n");
+    printf("==============================================\n");
+    printf("||                                          ||\n");
+    printf("|| [1] Trend Bulan Ini                      ||\n");
+    printf("|| [2] Trend Bulan Lalu                     ||\n");
+    printf("||                             [0] Kembali  ||\n");
+    printf("||                                          ||\n");
+    printf("==============================================\n");
+    range_int(&Pilihan, 0, 2, ">> ");
+
+    switch (Pilihan)
+    {
+    case 1:
+        break;
+    case 2:
+        system("cls");
+        printf("==============================================\n");
+        printf("..............SUB PROGRAM MANAGER.............\n");
+        printf("==============================================\n");
+        printf("||                                          ||\n");
+        printf("||     Berapa Bulan Kebelakang?             ||\n");
+        printf("||                                          ||\n");
+        printf("||                             [0] Kembali  ||\n");
+        printf("||                                          ||\n");
+        printf("==============================================\n");
+        positif_int(&bulanLalu, ">> ");
+        if (bulanLalu == 0)
+        {
+            managerOften();
+            exit(0);
+        }
+        bulan -= bulanLalu % 12;
+        tahun -= bulanLalu / 12;
+
+        break;
+    case 3:
+        managerSubProgram();
+        break;
+
+    default:
+        break;
+    }
+    system("cls");
+    printf("==============================================\n");
+    printf("..............SUB PROGRAM MANAGER.............\n");
+    printf("==============================================\n");
+    printf("  Trend Barang %d/%d\n", bulan, tahun);
+
+    // mulai proses
     int pertama = 0,
-        i,
-        status,
-        data[1080];
+        status;
 
     FILE *fHis = fopen("riwayatpembelian.txt", "r"),
          *read,
@@ -1319,7 +1367,6 @@ void managerOften()
         }
     } while (!feof(fHis));
 
-    
     // app = fopen("sortTemp.txt", "w");
 
     // sampe sini tanggal 16
@@ -1338,19 +1385,15 @@ void managerOften()
     // } while (!feof(read));
     // printf("%s,%d", barangTarget, jumlahtarget);
 
-    
     // system("pause");
     sortTemphis();
 
-    //minjem variable untuk ngeprint ini aja
+    // minjem variable untuk ngeprint ini aja
     read = fopen("riwayatpembelianTemp.txt", "r");
-    printf("==============================================\n");
-    printf("..............SUB PROGRAM MANAGER.............\n");
-    printf("==============================================\n");
     do
     {
-        fscanf(read,"%[^,],%d\n",barangTarget,&jumlahtarget);
-        printf("  - %s  (%d Unit)\n",barangTarget,jumlahtarget);
+        fscanf(read, "%[^,],%d\n", barangTarget, &jumlahtarget);
+        printf("  - %s  (%d Unit)\n", barangTarget, jumlahtarget);
     } while (!feof(read));
     fclose(read);
     remove("riwayatpembelianTemp.txt");
@@ -1413,7 +1456,7 @@ void sortTemphis()
         fscanf(read, "%[^,],%d\n", barang, &jumlah);
         if (jumlah > jumlahHigh)
         {
-            //printf("%s,%d\n", barang, jumlah);
+            // printf("%s,%d\n", barang, jumlah);
             strcpy(barangHigh, barang);
             jumlahHigh = jumlah;
         }
@@ -1423,9 +1466,8 @@ void sortTemphis()
     fclose(add);
     fclose(read);
 
-
     strerror(errno);
-    //system("pause");
+    // system("pause");
     hapusTempSort(barangHigh);
 
     read = fopen("riwayatpembelianTemp.txt", "r");
@@ -1435,7 +1477,7 @@ void sortTemphis()
         sortTemphis();
     }
     fclose(read);
-    rename("sortTemp.txt","riwayatpembelianTemp.txt");
+    rename("sortTemp.txt", "riwayatpembelianTemp.txt");
 }
 void hapusTempSort(char *barangTarget)
 {
@@ -1451,7 +1493,7 @@ void hapusTempSort(char *barangTarget)
         fscanf(read, "%[^,],%d\n", barang, &jumlah);
         if (strcmp(barangTarget, barang))
         {
-            //printf("%s,%d\n", barang, jumlah);
+            // printf("%s,%d\n", barang, jumlah);
             fprintf(write, "%s,%d\n", barang, jumlah);
             status++;
         }
@@ -1459,10 +1501,9 @@ void hapusTempSort(char *barangTarget)
     fclose(write);
     fclose(read);
 
-    //printf("hapus\n");
+    // printf("hapus\n");
     remove("riwayatpembelianTemp.txt");
     rename("TempHapusHis.txt", "riwayatpembelianTemp.txt");
-
 
     if (status == 0)
     {
