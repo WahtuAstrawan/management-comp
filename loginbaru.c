@@ -1318,7 +1318,7 @@ void managerOften()
     printf("  Trend Barang %d/%d\n", bulan, tahun);
 
     // mulai proses
-    int pertama = 0,
+    int pertama = 0, trend = 0,
         status;
 
     FILE *fHis = fopen("riwayatpembelian.txt", "r"),
@@ -1364,38 +1364,29 @@ void managerOften()
                     fclose(app);
                 }
             }
+            trend++;
         }
     } while (!feof(fHis));
 
-    // app = fopen("sortTemp.txt", "w");
-
-    // sampe sini tanggal 16
-    // fscanf(read, "%[^,],%d\n", barang, &jumlahBarang);
-
-    // strcpy(barangTarget, barang);
-    // jumlahtarget = jumlahBarang;
-    // do
-    // {
-    //     fscanf(read, "%[^,],%d\n", barang, &jumlahBarang);
-    //     if (jumlahBarang > jumlahtarget)
-    //     {
-    //         strcpy(barangTarget, barang);
-    //         jumlahtarget = jumlahBarang;
-    //     }
-    // } while (!feof(read));
-    // printf("%s,%d", barangTarget, jumlahtarget);
-
-    // system("pause");
-    sortTemphis();
-
-    // minjem variable untuk ngeprint ini aja
-    read = fopen("riwayatpembelianTemp.txt", "r");
-    do
+    fclose(fHis);
+    if (trend == 0)
     {
-        fscanf(read, "%[^,],%d\n", barangTarget, &jumlahtarget);
-        printf("  - %s  (%d Unit)\n", barangTarget, jumlahtarget);
-    } while (!feof(read));
-    fclose(read);
+        fclose(app);
+        printf("\n\tBulan Ini Tidak Ada Pembelian\n");
+    }
+    else
+    {
+        sortTemphis();
+
+        // minjem variable untuk ngeprint ini aja
+        read = fopen("riwayatpembelianTemp.txt", "r");
+        do
+        {
+            fscanf(read, "%[^,],%d\n", barangTarget, &jumlahtarget);
+            printf("  - %s\t(%d Unit)\n", barangTarget, jumlahtarget);
+        } while (!feof(read));
+        fclose(read);
+    }
     remove("riwayatpembelianTemp.txt");
 
     exit(0);
