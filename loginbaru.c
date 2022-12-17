@@ -30,6 +30,9 @@ void login(),
     managerOften(),
 
     editTempHis(char *barang, int jumlah),
+    sortTemphis(),
+    hapusTempSort(char *barangTarget),
+
     addAcc(char *jabatan, char *username, char *password),
     date(int *tanggal, int *bulan, int *tahun),
     positif_int(int *var, char *intruksi);
@@ -1316,26 +1319,41 @@ void managerOften()
         }
     } while (!feof(fHis));
 
+    
+    // app = fopen("sortTemp.txt", "w");
+
+    // sampe sini tanggal 16
+    // fscanf(read, "%[^,],%d\n", barang, &jumlahBarang);
+
+    // strcpy(barangTarget, barang);
+    // jumlahtarget = jumlahBarang;
+    // do
+    // {
+    //     fscanf(read, "%[^,],%d\n", barang, &jumlahBarang);
+    //     if (jumlahBarang > jumlahtarget)
+    //     {
+    //         strcpy(barangTarget, barang);
+    //         jumlahtarget = jumlahBarang;
+    //     }
+    // } while (!feof(read));
+    // printf("%s,%d", barangTarget, jumlahtarget);
+
+    
+    // system("pause");
+    sortTemphis();
+
+    //minjem variable untuk ngeprint ini aja
     read = fopen("riwayatpembelianTemp.txt", "r");
-    app = fopen("sortTemp.txt", "w");
-
-
-
-    //sampe sini tanggal 16
-    fscanf(read, "%[^,],%d\n", barang, &jumlahBarang);
-
-    strcpy(barangTarget, barang);
-    jumlahtarget = jumlahBarang;
+    printf("==============================================\n");
+    printf("..............SUB PROGRAM MANAGER.............\n");
+    printf("==============================================\n");
     do
     {
-        fscanf(read, "%[^,],%d\n", barang, &jumlahBarang);
-        if (jumlahBarang > jumlahtarget)
-        {
-            strcpy(barangTarget, barang);
-            jumlahtarget = jumlahBarang;
-        }
+        fscanf(read,"%[^,],%d\n",barangTarget,&jumlahtarget);
+        printf("  - %s  (%d Unit)\n",barangTarget,jumlahtarget);
     } while (!feof(read));
-    printf("%s,%d", barangTarget, jumlahtarget);
+    fclose(read);
+    remove("riwayatpembelianTemp.txt");
 
     exit(0);
 }
@@ -1375,4 +1393,79 @@ void date(int *tanggal, int *bulan, int *tahun)
     *tanggal = tm.tm_mday;
     *bulan = tm.tm_mon + 1;
     *tahun = tm.tm_year + 1900;
+}
+
+void sortTemphis()
+{
+    char barang[100], barangHigh[100];
+    int jumlah, jumlahHigh;
+    FILE *read, *add;
+
+    read = fopen("riwayatpembelianTemp.txt", "r");
+    add = fopen("sortTemp.txt", "a");
+
+    fscanf(read, "%[^,],%d\n", barang, &jumlah);
+
+    strcpy(barangHigh, barang);
+    jumlahHigh = jumlah;
+    do
+    {
+        fscanf(read, "%[^,],%d\n", barang, &jumlah);
+        if (jumlah > jumlahHigh)
+        {
+            //printf("%s,%d\n", barang, jumlah);
+            strcpy(barangHigh, barang);
+            jumlahHigh = jumlah;
+        }
+    } while (!feof(read));
+
+    fprintf(add, "%s,%d\n", barangHigh, jumlahHigh);
+    fclose(add);
+    fclose(read);
+
+
+    strerror(errno);
+    //system("pause");
+    hapusTempSort(barangHigh);
+
+    read = fopen("riwayatpembelianTemp.txt", "r");
+    if (read != NULL)
+    {
+        fclose(read);
+        sortTemphis();
+    }
+    fclose(read);
+    rename("sortTemp.txt","riwayatpembelianTemp.txt");
+}
+void hapusTempSort(char *barangTarget)
+{
+    FILE *read = fopen("riwayatpembelianTemp.txt", "r"),
+         *write = fopen("TempHapusHis.txt", "w");
+
+    char barang[100];
+    int jumlah,
+        status = 0;
+    do
+    {
+        fflush(stdin);
+        fscanf(read, "%[^,],%d\n", barang, &jumlah);
+        if (strcmp(barangTarget, barang))
+        {
+            //printf("%s,%d\n", barang, jumlah);
+            fprintf(write, "%s,%d\n", barang, jumlah);
+            status++;
+        }
+    } while (!feof(read));
+    fclose(write);
+    fclose(read);
+
+    //printf("hapus\n");
+    remove("riwayatpembelianTemp.txt");
+    rename("TempHapusHis.txt", "riwayatpembelianTemp.txt");
+
+
+    if (status == 0)
+    {
+        remove("riwayatpembelianTemp.txt");
+    }
 }
