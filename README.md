@@ -1,8 +1,8 @@
 # Tugas-Besar-Liangga-Wahtu
 
-Nama Program   : LIANWA MANAGEMENT
+Nama Program   : COMPUTER MANAGEMENT
 
-Tujuan Program : Sebagai kasir dan stok barang dari Toko hardware komputer
+Tujuan Program : Sebagai kasir, mengatur stok barang dan data-data barang pada Toko hardware komputer
 
 
 Nama : I Putu Liangga Ristiana Putra
