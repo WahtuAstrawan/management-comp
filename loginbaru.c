@@ -366,6 +366,7 @@ void AdminEditAccount()
     printf("==============================================\n");
     printf(" Masukan Username Akun Yang Ingin Di Edit\n");
     printf(" (ketik 0 untuk kembali ke menu admin)\n");
+    printf(" >> ");
     while (1) // validasi akun yang akan di edit
     {
         gets(akun);
@@ -695,7 +696,6 @@ int inputUsername(char *user)
     strcpy(user, newUsername);
     return 0;
 }
-
 int cekUser(char *nama)
 /*  Pembuat : Liangga
     Tanggal : 14/12/2022
@@ -733,7 +733,6 @@ int cekUser(char *nama)
     fclose(fAkun);
     return 0;
 }
-
 int inputPassword(char *pass)
 /*  Pembuat : Liangga
     Tanggal : 14/12/2022
@@ -801,7 +800,6 @@ int inputPassword(char *pass)
     strcpy(pass, newPassword);
     return 0;
 }
-
 void addAcc(char *jabatan, char *username, char *password)
 /*  Pembuat : Liangga
     Tanggal : 14/12/2022
@@ -811,6 +809,7 @@ void addAcc(char *jabatan, char *username, char *password)
     -   prosedur ini digunakan untuk menambahkan akun
         yang terdiri dari jabatan, username, dan password
     -   data disimpan di akunPass.txt
+    -   dipanggil di AdminCreateAccount()
 
     parameter :
     -   char *jabatan => jabatan dari akun yang ditambahkan
@@ -1136,7 +1135,7 @@ void showAllAcc()
         while (!feof(fAkun))
         {
             fscanf(fAkun, "%[^,],%[^,],%[^\n]\n", jabatan, username, password);
-            switch (i)
+            switch (i)//agar di akun ditampilkan secara terurut berdasarkan jabatan
             {
             case 0:
                 if (!strcmp(jabatan, "kasir"))
@@ -1300,11 +1299,11 @@ void managerOften()
         dateHis,
         monHis,
         yearHis,
-        jumlahBarang,
-        jumlahtarget,
+        jumlahBarang,//menampung jumlah barang didalam riwayatpembelian.txt
+        jumlahtarget,//menamapung jumlah barang didalam riwayatpembelianTemp.txt
         harga;
-    char barang[100],
-        barangTarget[100];
+    char barang[100],// menampung nama barang didalam riwayatpembelian.txt
+        barangTarget[100];//menamapung nama barang didalam riwayatpembelianTemp.txt
 
     date(&tanggal, &bulan, &tahun);
 
@@ -1367,37 +1366,38 @@ void managerOften()
          *read,
          *app = fopen("riwayatpembelianTemp.txt", "a");
 
-    do
+    while (!feof(fHis))
     {
-
         fscanf(fHis, "%d,%d,%d,%[^,],%d,%d\n", &dateHis, &monHis, &yearHis, barang, &jumlahBarang, &harga);
-        if (bulan == monHis && tahun == yearHis)
+        if (bulan == monHis && tahun == yearHis)//hanya menerima data barang di tanggal yang ditentukan
         {
 
-            if (pertama == 0)
+            if (pertama == 0)//data pertama akan langsung dicatat di file Temp
             {
 
                 fprintf(app, "%s,%d\n", barang, jumlahBarang);
                 fclose(app);
-                pertama++;
+                pertama++;//acuan bahwa data pertama sudah dicatat
             }
             else
             {
                 status = 0;
                 read = fopen("riwayatpembelianTemp.txt", "r");
-                do
+                while (!feof(read))
                 {
                     fscanf(read, "%[^,],%d\n", barangTarget, &jumlahtarget);
+
+                    // memeriksa apakah ada nama barang yang sama antara di file riwayatpembelian.txt dengan riwayatpembelianTemp.txt
                     if (!strcmp(barang, barangTarget))
                     {
                         fclose(read);
-                        editTempHis(barang, jumlahBarang);
-                        status++;
+                        editTempHis(barang, jumlahBarang);//jika sama, edit jumlah barang tersebut
+                        status++;//acuan bahwa ada nama barang yang sama
                         break;
                     }
 
-                } while (!feof(read));
-                if (status == 0)
+                }
+                if (status == 0)//jika tidak ada nama barang sama, catat data barang tersebut
                 {
 
                     fclose(read);
@@ -1406,9 +1406,9 @@ void managerOften()
                     fclose(app);
                 }
             }
-            trend++;
+            trend++;// untuk acuan apakah ada pembelian di tanggal yang sudah ditentukan
         }
-    } while (!feof(fHis));
+    }
 
     fclose(fHis);
     if (trend == 0)
@@ -1444,42 +1444,6 @@ void managerOften()
     }
 }
 
-void editTempHis(char *barang, int jumlah)
-/*  Pembuat : Liangga
-    Tanggal : 15/12/2022
-    Revisi  : -
-
-    Catatan :
-    -   prosedur ini digunakan untuk merubah jumlah barang dari file riwayatpembelianTemp.txt
-    -   prosedur ini dipanggil di prosedur managerOften()
-*/
-{
-    FILE *Read = fopen("riwayatpembelianTemp.txt", "r"),
-         *Add = fopen("TempEditHis.txt", "w");
-
-    char barangTarget[100];
-    int jumlahTarget;
-
-    while (!feof(Read))
-    {
-        fscanf(Read, "%[^,],%d\n", barangTarget, &jumlahTarget);
-
-        if (!strcmp(barang, barangTarget))
-        {
-            jumlahTarget += jumlah;
-            fprintf(Add, "%s,%d\n", barangTarget, jumlahTarget);
-        }
-        else
-        {
-            fprintf(Add, "%s,%d\n", barangTarget, jumlahTarget);
-        }
-    }
-    fclose(Add);
-    fclose(Read);
-    remove("riwayatpembelianTemp.txt");
-    rename("TempEditHis.txt", "riwayatpembelianTemp.txt");
-}
-
 void date(int *tanggal, int *bulan, int *tahun)
 /*  Pembuat : Liangga
     Tanggal : 15/12/2022
@@ -1487,6 +1451,11 @@ void date(int *tanggal, int *bulan, int *tahun)
 
     Catatan :
     -   prosedur ini digunakan untuk mengetahui local time saat program dijalankan
+
+    parameter : 
+    int *tanggal
+    int *bulan
+    int *tahun
 */
 {
     time_t t = time(NULL);
@@ -1496,6 +1465,47 @@ void date(int *tanggal, int *bulan, int *tahun)
     *tahun = tm.tm_year + 1900;
 }
 
+void editTempHis(char *barang, int jumlah)
+/*  Pembuat : Liangga
+    Tanggal : 15/12/2022
+    Revisi  : -
+
+    Catatan :
+    -   prosedur ini digunakan untuk merubah jumlah barang dari file riwayatpembelianTemp.txt
+    -   prosedur ini dipanggil di prosedur managerOften()
+
+    parameter :
+    -   char *barang => untuk tempat ditampungnya nama barang yang ingin dirubah
+    -   int jumlah   => untuk menampung jumlah barang
+*/
+{
+    //membuka file yang diperlukan
+    FILE *Read = fopen("riwayatpembelianTemp.txt", "r"),
+         *Add = fopen("TempEditHis.txt", "w");
+
+    char barangTarget[100];//menampung data barang di dalam file
+    int jumlahTarget;//menampung jumlah barang di dalam file
+
+    while (!feof(Read))
+    {
+        //membaca file per baris
+        fscanf(Read, "%[^,],%d\n", barangTarget, &jumlahTarget);
+
+        if (!strcmp(barang, barangTarget)) // saat nama barang disuatu baris sama dengan barang yang ingin diubah jumlahnya
+        {
+            jumlahTarget += jumlah;//tambah jumlah barang semula dengan jumlah barang yang dimasukkan di parameter
+            fprintf(Add, "%s,%d\n", barangTarget, jumlahTarget);
+        }
+        else// selain itu catat data barang ke TempEditHis.txt
+        {
+            fprintf(Add, "%s,%d\n", barangTarget, jumlahTarget);
+        }
+    }
+    fclose(Add);
+    fclose(Read);
+    remove("riwayatpembelianTemp.txt");
+    rename("TempEditHis.txt", "riwayatpembelianTemp.txt");
+}
 void sortTemphis()
 /*  Pembuat : Liangga
     Tanggal : 15/12/2022
@@ -1508,36 +1518,39 @@ void sortTemphis()
     -   prosedur ini dipanggil di dalam prosedur managerOften()
 */
 {
-    char barang[100], barangHigh[100];
-    int jumlah, jumlahHigh;
-    FILE *read, *add;
+    char barang[100], //menampung data nama barang
+        barangHigh[100];//menampung nama barang yang memiliki jumlah tertinggi
+    int jumlah, //menampung data jumlah barang
+        jumlahHigh;//menampung jumlah barang tertinggi
 
+    FILE *read, *add;
     read = fopen("riwayatpembelianTemp.txt", "r");
     add = fopen("sortTemp.txt", "a");
 
+    //menjadikan data pertama sebagai data barang tertinggi
     fscanf(read, "%[^,],%d\n", barang, &jumlah);
-
     strcpy(barangHigh, barang);
     jumlahHigh = jumlah;
-    do
+
+    while (!feof(read))
     {
         fscanf(read, "%[^,],%d\n", barang, &jumlah);
-        if (jumlah > jumlahHigh)
+        if (jumlah > jumlahHigh)//membandingkan jumlah barang suatu baris dengan jumlah tertinggi
         {
             
-            strcpy(barangHigh, barang);
+            strcpy(barangHigh, barang);//mengganti nama dan jumlah barang tertinggi
             jumlahHigh = jumlah;
         }
-    } while (!feof(read));
+    }
 
-    fprintf(add, "%s,%d\n", barangHigh, jumlahHigh);
+    fprintf(add, "%s,%d\n", barangHigh, jumlahHigh);//data tertinggi simpan di sortTemp
     fclose(add);
     fclose(read);
     
-    hapusTempSort(barangHigh);
+    hapusTempSort(barangHigh);//data barang tertinggi akan dihapus di file riwayatpembelianTemp.txt
 
     read = fopen("riwayatpembelianTemp.txt", "r");
-    if (read != NULL)
+    if (read != NULL)//jika ada data selain data tertinggi, akan dicari data tertinggi kedua, ketiga dst
     {
         fclose(read);
         sortTemphis();
@@ -1554,15 +1567,19 @@ void hapusTempSort(char *barangTarget)
     -   prosedur ini digunakan untuk menghapus suatu data di riwayatpembelianTemp.txt
         jika sudah dicatat di sortTemp.txt
     -   prosedur ini dipanggil di dalam prosedur sortTemphis()
+
+    parameter :
+    -   char *barangTarget => untuk tempat ditampungnya nama barang yang ingin dihapus
 */
 {
+    //membuka file yang dibutuhkan
     FILE *read = fopen("riwayatpembelianTemp.txt", "r"),
          *write = fopen("TempHapusHis.txt", "w");
 
-    char barang[100];//menampung data nama barang
-    int jumlah,//menampung data jumlah barang
-        status = 0;//sebagai acuan apakah program memasuki if
-    do
+    char barang[100];
+    int jumlah,
+        status = 0;//sebagai acuan apakah program memasuki perulangan
+    while (!feof(read))
     {
         fflush(stdin);
         fscanf(read, "%[^,],%d\n", barang, &jumlah);
@@ -1572,14 +1589,14 @@ void hapusTempSort(char *barangTarget)
             fprintf(write, "%s,%d\n", barang, jumlah);
             status++;
         }
-    } while (!feof(read));
+    } 
     fclose(write);
     fclose(read);
 
-    remove("riwayatpembelianTemp.txt");//hapus data riwayatpembelian.txt lama
-    rename("TempHapusHis.txt", "riwayatpembelianTemp.txt");//TempHapusHis menjadi riwayatpembelian.txt baru
+    remove("riwayatpembelianTemp.txt");
+    rename("TempHapusHis.txt", "riwayatpembelianTemp.txt");
 
-    if (status == 0)// saat tidak ada data maka hapus file riwayatpembelian.txt
+    if (status == 0)// saat tidak ada data (tidak memasuki perulangan) maka hapus file riwayatpembelian.txt
     {
         remove("riwayatpembelianTemp.txt");
     }
