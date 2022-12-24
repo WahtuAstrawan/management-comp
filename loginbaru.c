@@ -997,6 +997,15 @@ void positif_int(int *var, char *intruksi)
 }
 
 void managerSubProgram()
+/*  Pembuat : Liangga
+    Tanggal : 15/12/2022
+    Revisi  : -
+
+    Catatan :
+    -   prosedur ini merupakan sub program manager
+    -   memiliki 3 menu yaitu daftar pegawai, pemasukan kotor, trend barang
+
+*/
 {
     int Pilihan;
     system("cls");
@@ -1006,7 +1015,7 @@ void managerSubProgram()
     printf("||                                          ||\n");
     printf("|| [1] Daftar Pegawai                       ||\n");
     printf("|| [2] Pemasukan kotor                      ||\n");
-    printf("|| [3] Barang Paling Laku                   ||\n");
+    printf("|| [3] Trend Barang                         ||\n");
     printf("|| [4] log out                              ||\n");
     printf("||                       [0] Keluar Program ||\n");
     printf("||                                          ||\n");
@@ -1037,6 +1046,14 @@ void managerSubProgram()
 }
 
 void managerShowAccount()
+/*  Pembuat : Liangga
+    Tanggal : 15/12/2022
+    Revisi  : -
+
+    Catatan :
+    -   prosedur ini digunakan untuk menampilkan jumlah pegawai dengan jabatannya
+    -   digunakan saat mengedit akun
+*/
 {
     int Pilihan;
     FILE *fAkun = fopen("akunPass.txt", "r");
@@ -1099,6 +1116,14 @@ void managerShowAccount()
     }
 }
 void showAllAcc()
+/*  Pembuat : Liangga
+    Tanggal : 15/12/2022
+    Revisi  : -
+
+    Catatan :
+    -   prosedur ini digunakan untuk menampilkan daftar pegawai secara keseluruhan
+    -   dipanggil didalam prosedur managerShowAccount()
+*/
 {
     FILE *fAkun;
     char jabatan[8],
@@ -1145,6 +1170,14 @@ void showAllAcc()
 }
 
 void managerProfit()
+/*  Pembuat : Liangga
+    Tanggal : 15/12/2022
+    Revisi  : -
+
+    Catatan :
+    -   prosedur ini digunakan untuk menampilkan keuntungan pada bulan tertentu
+        yang dipilih user
+*/
 {
     FILE *fHis = fopen("riwayatpembelian.txt", "r");
     int tanggal,
@@ -1249,6 +1282,15 @@ void managerProfit()
 }
 
 void managerOften()
+/*  Pembuat : Liangga
+    Tanggal : 15/12/2022
+    Revisi  : -
+
+    Catatan :
+    -   prosedur ini digunakan untuk menampilkan ranking barang yang sering dibeli(trend barang)
+        pada bulan tertentu yang dipilih user
+*/
+
 {
 
     int tanggal,
@@ -1389,10 +1431,28 @@ void managerOften()
     }
     remove("riwayatpembelianTemp.txt");
 
-    exit(0);
+    printf("==============================================\n");
+    printf("  [1]Ulang                           [0]Menu\n");
+    range_int(&Pilihan,0,1,"  >> ");
+    if (Pilihan == 1)
+    {
+        managerOften();
+        exit(0);
+    }else{
+        managerSubProgram();
+        exit(0);
+    }
 }
 
 void editTempHis(char *barang, int jumlah)
+/*  Pembuat : Liangga
+    Tanggal : 15/12/2022
+    Revisi  : -
+
+    Catatan :
+    -   prosedur ini digunakan untuk merubah jumlah barang dari file riwayatpembelianTemp.txt
+    -   prosedur ini dipanggil di prosedur managerOften()
+*/
 {
     FILE *Read = fopen("riwayatpembelianTemp.txt", "r"),
          *Add = fopen("TempEditHis.txt", "w");
@@ -1421,6 +1481,13 @@ void editTempHis(char *barang, int jumlah)
 }
 
 void date(int *tanggal, int *bulan, int *tahun)
+/*  Pembuat : Liangga
+    Tanggal : 15/12/2022
+    Revisi  : -
+
+    Catatan :
+    -   prosedur ini digunakan untuk mengetahui local time saat program dijalankan
+*/
 {
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
@@ -1430,6 +1497,16 @@ void date(int *tanggal, int *bulan, int *tahun)
 }
 
 void sortTemphis()
+/*  Pembuat : Liangga
+    Tanggal : 15/12/2022
+    Revisi  : -
+
+    Catatan :
+    -   prosedur ini digunakan untuk mengurutkan secara descending file riwayatpembelianTemp.txt
+        dengan teknik rekursif kemudian menyimpannya secara sementara di sortTemp.txt
+        setelah semua data terurut sortTemp.txt akan direname menjadi riwayatpembelianTemp.txt
+    -   prosedur ini dipanggil di dalam prosedur managerOften()
+*/
 {
     char barang[100], barangHigh[100];
     int jumlah, jumlahHigh;
@@ -1447,7 +1524,7 @@ void sortTemphis()
         fscanf(read, "%[^,],%d\n", barang, &jumlah);
         if (jumlah > jumlahHigh)
         {
-            // printf("%s,%d\n", barang, jumlah);
+            
             strcpy(barangHigh, barang);
             jumlahHigh = jumlah;
         }
@@ -1456,9 +1533,7 @@ void sortTemphis()
     fprintf(add, "%s,%d\n", barangHigh, jumlahHigh);
     fclose(add);
     fclose(read);
-
-    strerror(errno);
-    // system("pause");
+    
     hapusTempSort(barangHigh);
 
     read = fopen("riwayatpembelianTemp.txt", "r");
@@ -1471,20 +1546,29 @@ void sortTemphis()
     rename("sortTemp.txt", "riwayatpembelianTemp.txt");
 }
 void hapusTempSort(char *barangTarget)
+/*  Pembuat : Liangga
+    Tanggal : 15/12/2022
+    Revisi  : -
+
+    Catatan :
+    -   prosedur ini digunakan untuk menghapus suatu data di riwayatpembelianTemp.txt
+        jika sudah dicatat di sortTemp.txt
+    -   prosedur ini dipanggil di dalam prosedur sortTemphis()
+*/
 {
     FILE *read = fopen("riwayatpembelianTemp.txt", "r"),
          *write = fopen("TempHapusHis.txt", "w");
 
-    char barang[100];
-    int jumlah,
-        status = 0;
+    char barang[100];//menampung data nama barang
+    int jumlah,//menampung data jumlah barang
+        status = 0;//sebagai acuan apakah program memasuki if
     do
     {
         fflush(stdin);
         fscanf(read, "%[^,],%d\n", barang, &jumlah);
-        if (strcmp(barangTarget, barang))
+        if (strcmp(barangTarget, barang))//tulis data barang selain data barang yang ingin dihapus
         {
-            // printf("%s,%d\n", barang, jumlah);
+            
             fprintf(write, "%s,%d\n", barang, jumlah);
             status++;
         }
@@ -1492,11 +1576,10 @@ void hapusTempSort(char *barangTarget)
     fclose(write);
     fclose(read);
 
-    // printf("hapus\n");
-    remove("riwayatpembelianTemp.txt");
-    rename("TempHapusHis.txt", "riwayatpembelianTemp.txt");
+    remove("riwayatpembelianTemp.txt");//hapus data riwayatpembelian.txt lama
+    rename("TempHapusHis.txt", "riwayatpembelianTemp.txt");//TempHapusHis menjadi riwayatpembelian.txt baru
 
-    if (status == 0)
+    if (status == 0)// saat tidak ada data maka hapus file riwayatpembelian.txt
     {
         remove("riwayatpembelianTemp.txt");
     }
