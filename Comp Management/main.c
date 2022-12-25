@@ -2381,14 +2381,14 @@ void totalTransaksi()
     printf("\t\t\t\t             Tekan enter untuk melanjutkan...");
     getchar();
     fp = fopen("riwayatpembelian.txt", "a");
-    fprintf(fp, "%s,", waktu);
     for (int i = 0; i <= n; i++)
     {
+        fprintf(fp, "%s,", waktu);
         sprintf(buff, "%s,%d,", *x[i].nama, x[i].jumlah);
         fprintf(fp, "%s", buff);
+        sprintf(buff, "%d", x[i].totalHarga);
+        fprintf(fp, "%s\n", buff);
     }
-    sprintf(buff, "%d", total - pajak);
-    fprintf(fp, "%s\n", buff);
     fclose(fp);
     n = 0;
 }
