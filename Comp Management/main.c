@@ -2531,7 +2531,7 @@ void pesanSalah()
     printf(RED "\t\t\t\t =========================================================\n" COLOR_OFF);
     printf(RED "\t\t\t\t ||   Input Salah, Mohon Ikuti Petunjuk yang tersedia ! ||\n" COLOR_OFF);
     printf(RED "\t\t\t\t =========================================================\n" COLOR_OFF);
-    printf("\t\t\t\t               Tekan enter untuk melanjutkan...");
+    printf(RED "\t\t\t\t               Tekan enter untuk melanjutkan..." COLOR_OFF);
     getchar();
 }
 
