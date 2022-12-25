@@ -88,7 +88,7 @@ void awalCashier()
     char yakin;
     printf("\t\t\t\t ======================================================\n");
     printf("\t\t\t\t ||                                                  ||\n");
-    printf("\t\t\t\t ||...............CASHIER TRANSACTIONS...............||\n");
+    printf("\t\t\t\t ||.............. CASHIER TRANSACTIONS ..............||\n");
     printf("\t\t\t\t ||                                                  ||\n");
     printf("\t\t\t\t ======================================================\n");
     printf("\t\t\t\t || Pilihan ||              MAIN MENU                ||\n");
@@ -162,7 +162,7 @@ void awalGudang()
     char yakin;
     printf("\t\t\t\t ======================================================\n");
     printf("\t\t\t\t ||                                                  ||\n");
-    printf("\t\t\t\t ||.................WAREHOUSE ACTIVITY...............||\n");
+    printf("\t\t\t\t ||................ WAREHOUSE ACTIVITY ..............||\n");
     printf("\t\t\t\t ||                                                  ||\n");
     printf("\t\t\t\t ======================================================\n");
     printf("\t\t\t\t || Pilihan ||              MAIN MENU                ||\n");
@@ -399,7 +399,7 @@ void prosesBarang(char *namaFile, char *aksi)
             {
                 read = fscanf(fp, "%100[^,],%15[^,],%15[^\n]\n", a[i].nama, a[i].harga, a[i].stok);
                 printf("\t\t\t\t ||             || %s                                      \n", a[i].nama);
-                printf("\t\t\t\t ||     [%d]     || Harga/unit  : Rp.%s,-                  \n", no, a[i].harga);
+                printf("\t\t\t\t ||     [%d]     || Harga/unit   : Rp.%s,-                  \n", no, a[i].harga);
                 printf("\t\t\t\t ||             || Jumlah Stok  : %s                       \n", a[i].stok);
                 printf("\t\t\t\t ==========================================================\n");
                 no++;
@@ -502,7 +502,7 @@ void hapusBarang(char *namaFile)
             {
                 read = fscanf(fp, "%100[^,],%15[^,],%15[^\n]\n", z[i].nama, z[i].harga, z[i].stok);
                 printf("\t\t\t\t ||             || %s                                      \n", z[i].nama);
-                printf("\t\t\t\t ||   [%d]       || Harga/unit   : Rp.%s,-                  \n", no, z[i].harga);
+                printf("\t\t\t\t ||     [%d]     || Harga/unit   : Rp.%s,-                  \n", no, z[i].harga);
                 printf("\t\t\t\t ||             || Jumlah Stok  : %s                        \n", z[i].stok);
                 printf("\t\t\t\t ==========================================================\n");
                 no++;
@@ -605,7 +605,7 @@ void editBarang(char *namaFile)
             {
                 read = fscanf(fp, "%100[^,],%15[^,],%15[^\n]\n", y[i].nama, y[i].harga, y[i].stok);
                 printf("\t\t\t\t ||             || %s                                       \n", y[i].nama);
-                printf("\t\t\t\t ||   [%d]       || Harga/unit   : Rp.%s,-                  \n", no, y[i].harga);
+                printf("\t\t\t\t ||     [%d]     || Harga/unit   : Rp.%s,-                  \n", no, y[i].harga);
                 printf("\t\t\t\t ||             || Jumlah Stok  : %s                        \n", y[i].stok);
                 printf("\t\t\t\t ==========================================================\n");
                 no++;
@@ -887,15 +887,15 @@ void tambahBarang(char *kategori, char *namaFile)
     char namaG[100], hargaG[15], stokG[15];
     do
     {
-        system("clear");
-        printf("\t\t\t\t ==============================================================\n");
-        printf("\t\t\t\t ||    Konfirmasi menambah data barang ke kategori %s ?       \n", kategori);
-        printf("\t\t\t\t ==============================================================\n");
-        printf("\t\t\t\t  Pilih ( 1 -> Lanjut ) atau ( 0 -> kembali )\n");
-        range_int(&pilih, 0, 1, "\t\t\t\t  >> ");
-        if (pilih == 1)
+        while (true)
         {
-            while (true)
+            system("clear");
+            printf("\t\t\t\t ==============================================================\n");
+            printf("\t\t\t\t ||    Konfirmasi menambah data barang ke kategori %s ?       \n", kategori);
+            printf("\t\t\t\t ==============================================================\n");
+            printf("\t\t\t\t  Pilih ( 1 -> Lanjut ) atau ( 0 -> kembali )\n");
+            range_int(&pilih, 0, 1, "\t\t\t\t  >> ");
+            if (pilih == 1)
             {
                 system("clear");
                 printf("\t\t\t\t =========================================================\n");
@@ -905,15 +905,15 @@ void tambahBarang(char *kategori, char *namaFile)
                 scanf("%[^\n]", namaG);
                 getchar();
                 printf("\t\t\t\t =========================================================\n");
-                printf("\t\t\t\t ||  Masukkan harga/unit dari barang dengan Nama : %s \n", namaG);
-                printf("\t\t\t\t ||                yang akan ditambahkan  \n");
+                printf("\t\t\t\t ||  Masukkan harga/unit dari barang dengan \n");
+                printf("\t\t\t\t ||  Nama : %s \n", namaG);
                 printf("\t\t\t\t =========================================================\n");
                 printf("\t\t\t\t  >> Rp.");
                 scanf("%[^\n]", hargaG);
                 getchar();
                 printf("\t\t\t\t =========================================================\n");
-                printf("\t\t\t\t ||      Masukkan banyak stok barang yang tersedia \n");
-                printf("\t\t\t\t ||              dari barang dengan Nama : %s \n", namaG);
+                printf("\t\t\t\t || Masukkan banyak stok barang yang tersedia \n");
+                printf("\t\t\t\t || dari barang dengan Nama : %s \n", namaG);
                 printf("\t\t\t\t =========================================================\n");
                 printf("\t\t\t\t  >> ");
                 scanf("%[^\n]", stokG);
@@ -924,7 +924,7 @@ void tambahBarang(char *kategori, char *namaFile)
                 printf("\t\t\t\t || Dengan data dibawah pada Kategori %s ?         \n", kategori);
                 printf("\t\t\t\t ===================================================\n");
                 printf("\t\t\t\t || Nama        : %s                \n", namaG);
-                printf("\t\t\t\t || Harga/unit  : %s                \n", hargaG);
+                printf("\t\t\t\t || Harga/unit  : Rp.%s,-                \n", hargaG);
                 printf("\t\t\t\t || Stok        : %s unit           \n", stokG);
                 printf("\t\t\t\t ===================================================\n");
                 input_yakin(&yakin);
@@ -937,10 +937,10 @@ void tambahBarang(char *kategori, char *namaFile)
                     continue;
                 }
             }
-        }
-        else if (pilih == 0)
-        {
-            menulistBarang("Ditambah");
+            else if (pilih == 0)
+            {
+                menulistBarang("Ditambah");
+            }
         }
         system("clear");
         fp = fopen(namaFile, "a");
