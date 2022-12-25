@@ -1,0 +1,5 @@
+Logitech G Pro Wireless,1500000,8
+HyperX Pulsefire FPS Pro,750000,12
+SteelSeries Rival 600,1250000,7
+Corsair Dark Core RGB/SE,1500000,5
+Razer Mamba Elite,1200000,9

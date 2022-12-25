@@ -1,0 +1,5 @@
+Logitech G533 Wireless,1500000,7
+HyperX Cloud II,1000000,9
+Razer Kraken X,750000,15
+SteelSeries Arctis 7,1500000,14
+Corsair HS70 Wireless,1250000,6

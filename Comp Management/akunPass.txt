@@ -1,0 +1,3 @@
+admin,admin,admin
+kasir,wahtu,wahtu123
+gudang,liangga,liangga123

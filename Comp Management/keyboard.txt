@@ -1,0 +1,5 @@
+Logitech G413,1000000,12
+HyperX Alloy FPS Pro,1250000,8
+Razer BlackWidow Elite,2000000,5
+SteelSeries Apex 7 TKL,1500000,9
+Corsair K95 RGB Platinum XT,2500000,6

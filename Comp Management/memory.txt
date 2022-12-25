@@ -1,0 +1,5 @@
+Seagate Barracuda 2TB,500000,8
+Western Digital Blue 1TB,400000,14
+Kingston Digital 120GB SSD,250000,18
+Toshiba Canvio Basics 1TB,350000,9
+Western Digital Red 4TB,1000000,11

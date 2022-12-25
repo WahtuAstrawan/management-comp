@@ -1,0 +1,5 @@
+Thermaltake Versa H17,500000,9
+Corsair Carbide Series 100R,750000,14
+MSI MPG SEKIRA 500G,2500000,5
+ASRock Phantom Gaming 4,1500000,8
+Corsair Obsidian Series 500D,2000000,11

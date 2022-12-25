@@ -1,0 +1,5 @@
+Lenovo ThinkPad X1 Carbon,17500000,4
+ASUS ROG Zephyrus G14,20000000,5
+Dell Alienware m15,30000000,3
+Acer Aspire 5,12000000,3
+MSI GE75 Raider,22500000,4
