@@ -2562,7 +2562,7 @@ int konfirmasiBarang(char *nama, char *harga, char *stok)
         jumlah -> banyak barang yg akan dibeli oleh user
     */
     system("clear");
-    int jumlah, status, jumlahtemp = 0;
+    int jumlah, status = 0, jumlahtemp = 0;
     int tersedia = atoi(stok);
     char yakin;
     printf("\t\t\t\t =======================================================\n");
@@ -2610,7 +2610,14 @@ int konfirmasiBarang(char *nama, char *harga, char *stok)
             input_yakin(&yakin);
             if (yakin == 'Y')
             {
-                return jumlah;
+                if (status > 0)
+                {
+                    return jumlah - jumlahtemp;
+                }
+                else
+                {
+                    return jumlah;
+                }
             }
             else if (yakin = 'X')
             {
