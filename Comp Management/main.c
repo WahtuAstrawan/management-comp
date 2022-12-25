@@ -1814,8 +1814,8 @@ void menulistBarang(char *aksi)
     printf("\t\t\t\t ||   [0]   || Kembali                               ||\n");
     printf("\t\t\t\t ||         ||                                       ||\n");
     printf("\t\t\t\t ======================================================\n");
-    printf("\t\t\t\t  Pilih 12 untuk Mengkonfirmasi Pembelian (bila ada) \n");
-    printf("\t\t\t\t  Atau Pilih 13 untuk Membatalkan Pembelian (bila ada) \n");
+    printf("\t\t\t\t  Pilih 12 untuk Mengkonfirmasi Semua Pembelian (bila ada) \n");
+    printf("\t\t\t\t  Atau Pilih 13 untuk Membatalkan Semua Pembelian (bila ada) \n");
     printf("\t\t\t\t  Pilihan jenis barang untuk %s (1 -> 11) dan 0 untuk kembali \n", aksi);
     range_int(&pilih, 0, 13, "\t\t\t\t  >> ");
     if (pilih == 0)
@@ -1927,13 +1927,13 @@ void prosesBarang(char *namaFile, char *aksi)
     if (jenisLogin == 11)
     {
         barang a;
-        int pilih, jumlah, stok;
+        int pilih, jumlah, stok, i, read, no;
         char yakin;
-        int i = 0, read, no = 1;
-        fp = fopen(namaFile, "r");
         do
         {
             system("clear");
+            i = 0, no = 1;
+            fp = fopen(namaFile, "r");
             daftarBarang();
             do
             {
@@ -1976,7 +1976,7 @@ void prosesBarang(char *namaFile, char *aksi)
                 else if (stok <= 0)
                 {
                     stokHabis();
-                    pilih -= 999;
+                    pilih = 999;
                     continue;
                 }
             }
@@ -2028,14 +2028,14 @@ void hapusBarang(char *namaFile)
     */
     gudang z;
     char namaR[100], hargaR[15], stokR[15];
-    int pilih, read, cobalagi;
+    int pilih, read, cobalagi, no, i;
     char yakin;
     do
     {
         while (true)
         {
             system("clear");
-            int i = 0, no = 1;
+            i = 0, no = 1;
             fp = fopen(namaFile, "r");
             daftarBarang();
             do
@@ -2065,7 +2065,7 @@ void hapusBarang(char *namaFile)
                 printf("\t\t\t\t || Nama Barang             : %s\n", z[pilih].nama);
                 printf("\t\t\t\t || Harga per unit          : Rp.%s,-\n", z[pilih].harga);
                 printf("\t\t\t\t || Sisa Stok               : %s\n", z[pilih].stok);
-                printf("\t\t\t\t ======================================================\n");
+                printf("\t\t\t\t ======================================================\n\n");
                 printf("\t\t\t\t ======================================================\n");
                 printf("\t\t\t\t ||     Apakah anda ingin menghapus data diatas ?    ||\n");
                 printf("\t\t\t\t ======================================================\n");
@@ -2131,14 +2131,14 @@ void editBarang(char *namaFile)
     char namaBaru[100], hargaBaru[15], stokBaru[15];
     char namaR[100], hargaR[15], stokR[15];
     int pilihEdit;
-    int pilih, read, cobalagi;
+    int pilih, read, cobalagi, i, no;
     char yakin;
     do
     {
         while (true)
         {
             system("clear");
-            int i = 0, no = 1;
+            i = 0, no = 1;
             fp = fopen(namaFile, "r");
             daftarBarang();
             do
@@ -2181,7 +2181,8 @@ void editBarang(char *namaFile)
                 printf("\t\t\t\t ||  [3]  || Edit Stok Barang                        ||\n");
                 printf("\t\t\t\t ||       ||                                         ||\n");
                 printf("\t\t\t\t ======================================================\n");
-                range_int(&pilihEdit, 1, 3, "\t\t\t\t >> ");
+                printf("\t\t\t\t Atau Pilih 0 untuk kembali \n");
+                range_int(&pilihEdit, 0, 3, "\t\t\t\t >> ");
                 if (pilihEdit == 1)
                 {
                     printf("\t\t\t\t =======================================================\n");
@@ -2209,10 +2210,21 @@ void editBarang(char *namaFile)
                     scanf("%[^\n]", stokBaru);
                     getchar();
                 }
+                else if (pilihEdit == 0)
+                {
+                    continue;
+                }
                 input_yakin(&yakin);
                 if (yakin == 'Y')
                 {
-                    break;
+                    if (pilihEdit == 0)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
                 else if (yakin == 'X')
                 {
@@ -2573,7 +2585,7 @@ int konfirmasiBarang(char *nama, char *harga, char *stok)
         Catatan :
         fungsi ini digunakan untuk menkonfirmasi barang yang akan dibeli
         dan menanyakan jumlah barang yang akan dibeli dan tidak boleh
-        melebihi dari stok barang yg tersedia
+        melebihi dari stok barang yg tersedia dan kurang dari 1
         Parameter :
         nama (untuk menampilkan nama barang dari barang yg dipilih)
         harga (untuk menampilkan harga/unit barang dari barang yg dipilih)
@@ -2581,10 +2593,10 @@ int konfirmasiBarang(char *nama, char *harga, char *stok)
         Return :
         jumlah -> banyak barang yg akan dibeli oleh user
     */
-    system("clear");
     int jumlah, status = 0, jumlahtemp = 0;
     int tersedia = atoi(stok);
-    char yakin;
+    char yakin, yakin1, yakin2, yakin3;
+    system("clear");
     printf("\t\t\t\t =======================================================\n");
     printf("\t\t\t\t ||               Konfirmasi Pembelian                || \n");
     printf("\t\t\t\t =======================================================\n");
@@ -2592,61 +2604,107 @@ int konfirmasiBarang(char *nama, char *harga, char *stok)
     printf("\t\t\t\t || Harga per unit          : Rp.%s,-\n", harga);
     printf("\t\t\t\t || Sisa Stok               : %s\n", stok);
     printf("\t\t\t\t =======================================================\n");
-    do
+    printf("\t\t\t\t  Apakah anda yakin akan membeli barang diatas ?\n");
+    input_yakin(&yakin1);
+    if (yakin1 == 'Y')
     {
-        input_int(&jumlah, "\t\t\t\t  Jumlah yang akan dibeli \n\t\t\t\t  >> ");
-        for (int i = 0; i < n; i++)
+        do
         {
-            if (strcmp(*x[i].nama, nama) == 0)
+            jumlahtemp = 0;
+            system("clear");
+            printf("\t\t\t\t =======================================================\n");
+            printf("\t\t\t\t ||               Konfirmasi Pembelian                || \n");
+            printf("\t\t\t\t =======================================================\n");
+            printf("\t\t\t\t || Nama Barang             : %s\n", nama);
+            printf("\t\t\t\t || Harga per unit          : Rp.%s,-\n", harga);
+            printf("\t\t\t\t || Sisa Stok               : %s\n", stok);
+            printf("\t\t\t\t =======================================================\n");
+            input_int(&jumlah, "\t\t\t\t  Jumlah yang akan dibeli \n\t\t\t\t  >> ");
+            for (int i = 0; i < n; i++)
             {
-                jumlah += x[i].jumlah;
-                jumlahtemp += x[i].jumlah;
-                status++;
-            }
-        }
-        if (status > 0)
-        {
-            printf("\t\t\t\t =============================================================\n");
-            printf("\t\t\t\t ||   Peringatan bahwa sebelumnya anda telah mengkonfirmasi  \n");
-            printf("\t\t\t\t ||        untuk membeli barang ini sebanyak %d unit         \n", jumlahtemp);
-            printf("\t\t\t\t ||    dengan ini berarti anda membeli sebanyak %d unit      \n", jumlah);
-            printf("\t\t\t\t =============================================================\n");
-            printf("\t\t\t\t               Tekan enter untuk melanjutkan...");
-            getchar();
-        }
-        if (jumlah < 1)
-        {
-            printf(RED "\t\t\t\t Jumlah yang akan dibeli tidak boleh kurang dari 1 ! \n" COLOR_OFF);
-        }
-        else if (jumlah > tersedia)
-        {
-            printf(RED "\t\t\t\t Jumlah yang akan dibeli melebihi stok yang tersedia ! \n" COLOR_OFF);
-        }
-        else
-        {
-            printf("\t\t\t\t ========================================\n");
-            printf("\t\t\t\t ||         Apakah anda yakin ?        ||\n");
-            printf("\t\t\t\t ========================================\n");
-            input_yakin(&yakin);
-            if (yakin == 'Y')
-            {
-                if (status > 0)
+                if (strcmp(*x[i].nama, nama) == 0)
                 {
-                    return jumlah - jumlahtemp;
+                    jumlahtemp += x[i].jumlah;
+                    status++;
                 }
-                else
+            }
+            jumlah += jumlahtemp;
+            if (status > 0)
+            {
+                printf("\t\t\t\t =============================================================\n");
+                printf("\t\t\t\t ||   Peringatan bahwa sebelumnya anda telah mengkonfirmasi  \n");
+                printf("\t\t\t\t ||        untuk membeli barang ini sebanyak %d unit         \n", jumlahtemp);
+                printf("\t\t\t\t ||    dengan ini berarti anda membeli sebanyak %d unit      \n", jumlah);
+                printf("\t\t\t\t =============================================================\n");
+                printf("\t\t\t\t               Tekan enter untuk melanjutkan...");
+                getchar();
+            }
+            if (jumlah - jumlahtemp < 1)
+            {
+                printf(RED "\n\t\t\t\t Jumlah yang akan dibeli tidak boleh kurang dari 1 ! \n\n" COLOR_OFF);
+                printf("\t\t\t\t ============================================================\n");
+                printf("\t\t\t\t ||   Apakah anda ingin membatalkan pembelian barang ini ? ||\n");
+                printf("\t\t\t\t ============================================================\n");
+                input_yakin(&yakin3);
+                if (yakin3 == 'Y')
                 {
+                    jumlah = 0;
                     return jumlah;
                 }
+                else if (yakin3 == 'X')
+                {
+                    jumlahtemp = 0;
+                    continue;
+                }
             }
-            else if (yakin = 'X')
+            else if (jumlah > tersedia)
             {
-                jumlah = 0;
-                return jumlah;
+                printf(RED "\n\t\t\t\t Jumlah yang akan dibeli melebihi stok yang tersedia ! \n\n" COLOR_OFF);
+                printf("\t\t\t\t ============================================================\n");
+                printf("\t\t\t\t ||   Apakah anda ingin membatalkan pembelian barang ini ? ||\n");
+                printf("\t\t\t\t ============================================================\n");
+                input_yakin(&yakin2);
+                if (yakin2 == 'Y')
+                {
+                    jumlah = 0;
+                    return jumlah;
+                }
+                else if (yakin2 == 'X')
+                {
+                    jumlahtemp = 0;
+                    continue;
+                }
             }
-        }
-
-    } while (jumlah < 1 || jumlah > tersedia);
+            else
+            {
+                printf("\t\t\t\t ========================================\n");
+                printf("\t\t\t\t ||         Apakah anda yakin ?        ||\n");
+                printf("\t\t\t\t ========================================\n");
+                input_yakin(&yakin);
+                if (yakin == 'Y')
+                {
+                    if (status > 0)
+                    {
+                        return jumlah - jumlahtemp;
+                    }
+                    else
+                    {
+                        return jumlah;
+                    }
+                }
+                else if (yakin == 'X')
+                {
+                    jumlah = 999;
+                    continue;
+                }
+            }
+        } while (jumlah - jumlahtemp < 1 || jumlah > tersedia);
+    }
+    else if (yakin1 == 'X')
+    {
+        jumlah = 0;
+        return jumlah;
+    }
 }
 
 void daftarBarang() // Fungsi Untuk menampilkan header dari Daftar list barang
