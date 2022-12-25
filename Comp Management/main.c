@@ -1814,9 +1814,10 @@ void menulistBarang(char *aksi)
     printf("\t\t\t\t ||   [0]   || Kembali                               ||\n");
     printf("\t\t\t\t ||         ||                                       ||\n");
     printf("\t\t\t\t ======================================================\n");
+    printf("\t\t\t\t  Pilih 12 untuk Mengkonfirmasi Pembelian (bila ada) \n");
+    printf("\t\t\t\t  Atau Pilih 13 untuk Membatalkan Pembelian (bila ada) \n");
     printf("\t\t\t\t  Pilihan jenis barang untuk %s (1 -> 11) dan 0 untuk kembali \n", aksi);
-    printf("\t\t\t\t  Atau Pilih 12 untuk Mengkonfirmasi Pembelian (bila ada) \n");
-    range_int(&pilih, 0, 12, "\t\t\t\t  >> ");
+    range_int(&pilih, 0, 13, "\t\t\t\t  >> ");
     if (pilih == 0)
     {
         if (jenisLogin == 11)
@@ -1878,6 +1879,24 @@ void menulistBarang(char *aksi)
         {
             n--;
             totalTransaksi();
+        }
+        else
+        {
+            pesanSalah();
+            menulistBarang(aksi);
+        }
+    }
+    else if (pilih == 13)
+    {
+        if (n > 0)
+        {
+            n = 0;
+            printf("\t\t\t\t =========================================================\n");
+            printf("\t\t\t\t ||           Pembelian anda telah dibatalkan !         ||\n");
+            printf("\t\t\t\t =========================================================\n");
+            printf("\t\t\t\t              Tekan enter untuk melanjutkan...");
+            getchar();
+            awalCashier();
         }
         else
         {
