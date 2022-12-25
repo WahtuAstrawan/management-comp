@@ -77,7 +77,7 @@ void intro()
         fungsi ini digunakan untuk menampilkan tampilan
         nama program pada saat program dibuka
     */
-    system("cls");
+    system("clear");
     printf("\t\t\t\t ======================================================\n");
     printf("\t\t\t\t ||                                                  ||\n");
     printf("\t\t\t\t ||                                                  ||\n");
@@ -102,7 +102,7 @@ void login()
     dengan jabatan akun tersebut
 */
 {
-    system("cls");
+    system("clear");
     printf("\t\t\t\t ======================================================\n");
     printf("\t\t\t\t ||                                                  ||\n");
     printf("\t\t\t\t ||>>>>>>>>>>>>>>>>>> LOGIN ACCOUNT <<<<<<<<<<<<<<<<<||\n");
@@ -219,7 +219,7 @@ void AdminSubProgram()
 */
 {
     int Pilihan;
-    system("cls");
+    system("clear");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -286,7 +286,7 @@ void AdminCreateAccount()
 
     while (1)
     {
-        system("cls");
+        system("clear");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
         printf("\t\t\t\t==============================================\n");
@@ -307,7 +307,7 @@ void AdminCreateAccount()
         }
 
         // masukan password akun yang akan dibuat
-        system("cls");
+        system("clear");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
         printf("\t\t\t\t==============================================\n"); ///:
@@ -331,7 +331,7 @@ void AdminCreateAccount()
     while (1)
     {
         // masukan password akun yang akan dibuat
-        system("cls");
+        system("clear");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
         printf("\t\t\t\t==============================================\n");
@@ -357,7 +357,7 @@ void AdminCreateAccount()
     }
     addAcc(jabatan, username, password);
 
-    system("cls");
+    system("clear");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -407,7 +407,7 @@ void AdminEditAccount()
     char password[21];
 
     // program meminta user menginput username yang ingin di edit
-    system("cls");
+    system("clear");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -441,7 +441,7 @@ void AdminEditAccount()
 
         // memilih menu edit akun
         status = 0;
-        system("cls");
+        system("clear");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
         printf("\t\t\t\t==============================================\n");
@@ -523,7 +523,7 @@ void AdminEditAccount()
         remove("akunPass.txt");
         rename("tempAkun.txt", "akunPass.txt");
 
-        system("cls");
+        system("clear");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
         printf("\t\t\t\t==============================================\n");
@@ -542,7 +542,7 @@ void AdminEditAccount()
         }
         break;
     }
-    system("cls");
+    system("clear");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -587,7 +587,7 @@ void AdminDeleteAccount()
     int ulang;
 
     // program meminta user menginput username yang ingin di hapus
-    system("cls");
+    system("clear");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -615,7 +615,7 @@ void AdminDeleteAccount()
         printf(RED "\n\t\t\t\t\t\tAkun Tidak Ada!\n" COLOR_OFF);
     }
 
-    system("cls");
+    system("clear");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -650,7 +650,7 @@ void AdminDeleteAccount()
     remove("akunPass.txt");
     rename("tempAkun.txt", "akunPass.txt");
 
-    system("cls");
+    system("clear");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -879,7 +879,7 @@ int gantiJabatan(char *newJabatan)
 {
     int Pilihan;
     // memilih jabatan akun yang akan dibuat
-    system("cls");
+    system("clear");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -930,7 +930,7 @@ int gantiPassword(char *newPassword)
 */
 {
 
-    system("cls");
+    system("clear");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -963,7 +963,7 @@ int gantiUsername(char *newUsername)
     -   0 => pilihan disimpan sementara
 */
 {
-    system("cls");
+    system("clear");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -1007,7 +1007,7 @@ void managerSubProgram()
 */
 {
     int Pilihan;
-    system("cls");
+    system("clear");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
     printf("\t\t\t\t==============================================\n");
@@ -1079,7 +1079,7 @@ void managerShowAccount()
     } while (!feof(fAkun));
 
     fclose(fAkun);
-    system("cls");
+    system("clear");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
     printf("\t\t\t\t==============================================\n");
@@ -1093,7 +1093,7 @@ void managerShowAccount()
     switch (Pilihan)
     {
     case 1:
-        system("cls");
+        system("clear");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
         printf("\t\t\t\t==============================================\n");
@@ -1192,7 +1192,7 @@ void managerProfit()
     date(&tanggal, &bulan, &tahun);
 
     int Pilihan;
-    system("cls");
+    system("clear");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
     printf("\t\t\t\t==============================================\n");
@@ -1207,14 +1207,14 @@ void managerProfit()
     switch (Pilihan)
     {
     case 1:
-        system("cls");
+        system("clear");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t  Pemasukan %d/%d\n", bulan, tahun);
         break;
     case 2:
-        system("cls");
+        system("clear");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
         printf("\t\t\t\t==============================================\n");
@@ -1232,7 +1232,7 @@ void managerProfit()
         }
         bulan -= bulanLalu % 12;
         tahun -= bulanLalu / 12;
-        system("cls");
+        system("clear");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
         printf("\t\t\t\t==============================================\n");
@@ -1305,7 +1305,7 @@ void managerOften()
     date(&tanggal, &bulan, &tahun);
 
     int Pilihan;
-    system("cls");
+    system("clear");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
     printf("\t\t\t\t==============================================\n");
@@ -1322,7 +1322,7 @@ void managerOften()
     case 1:
         break;
     case 2:
-        system("cls");
+        system("clear");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
         printf("\t\t\t\t==============================================\n");
@@ -1349,7 +1349,7 @@ void managerOften()
     default:
         break;
     }
-    system("cls");
+    system("clear");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
     printf("\t\t\t\t==============================================\n");
@@ -1605,7 +1605,7 @@ void awalCashier()
         dan menu cashier pada saat login atau masuk sebagai cashier
         yang didalamnya dapat melakukan transaksi costumer
     */
-    system("cls");
+    system("clear");
     jenisLogin = 11;
     int pilih;
     char yakin;
@@ -1635,7 +1635,7 @@ void awalCashier()
     }
     else if (pilih == 2)
     {
-        system("cls");
+        system("clear");
         printf("\t\t\t\t ======================================================\n");
         printf("\t\t\t\t ||          Apakah anda yakin ingin logout ?        ||\n");
         printf("\t\t\t\t ======================================================\n");
@@ -1651,7 +1651,7 @@ void awalCashier()
     }
     else
     {
-        system("cls");
+        system("clear");
         printf("\t\t\t\t ======================================================\n");
         printf("\t\t\t\t ||          Apakah anda yakin ingin keluar ?        ||\n");
         printf("\t\t\t\t ======================================================\n");
@@ -1677,7 +1677,7 @@ void awalGudang()
         dan menu gudang pada saat login atau masuk sebagai gudang
         yang didalamnya terdapat pilihan untuk tambah, edit, dan hapus data barang
     */
-    system("cls");
+    system("clear");
     jenisLogin = 22;
     n = 0;
     int pilih;
@@ -1727,7 +1727,7 @@ void awalGudang()
     }
     else if (pilih == 4)
     {
-        system("cls");
+        system("clear");
         printf("\t\t\t\t ======================================================\n");
         printf("\t\t\t\t ||          Apakah anda yakin ingin logout ?        ||\n");
         printf("\t\t\t\t ======================================================\n");
@@ -1743,7 +1743,7 @@ void awalGudang()
     }
     else
     {
-        system("cls");
+        system("clear");
         printf("\t\t\t\t ======================================================\n");
         printf("\t\t\t\t ||          Apakah anda yakin ingin keluar ?        ||\n");
         printf("\t\t\t\t ======================================================\n");
@@ -1770,7 +1770,7 @@ void menulistBarang(char *aksi)
         Parameter : aksi (digunakan untuk memberikan instruksi proses apa yang akan dijalankan pada pilihan menu)
     */
     int pilih;
-    system("cls");
+    system("clear");
     printf("\t\t\t\t ======================================================\n");
     printf("\t\t\t\t ||                                                  ||\n");
     printf("\t\t\t\t ||................ LIST JENIS BARANG ...............||\n");
@@ -1914,7 +1914,7 @@ void prosesBarang(char *namaFile, char *aksi)
         fp = fopen(namaFile, "r");
         do
         {
-            system("cls");
+            system("clear");
             daftarBarang();
             do
             {
@@ -1966,7 +1966,7 @@ void prosesBarang(char *namaFile, char *aksi)
                 pesanSalah();
             }
         } while (pilih < 0 || pilih > no);
-        system("cls");
+        system("clear");
         printf("\t\t\t\t =========================================================\n");
         printf("\t\t\t\t ||        Apakah Anda Ingin membeli barang lagi ?      ||\n");
         printf("\t\t\t\t =========================================================\n");
@@ -2015,7 +2015,7 @@ void hapusBarang(char *namaFile)
     {
         while (true)
         {
-            system("cls");
+            system("clear");
             int i = 0, no = 1;
             fp = fopen(namaFile, "r");
             daftarBarang();
@@ -2039,7 +2039,7 @@ void hapusBarang(char *namaFile)
             else if (pilih >= 1 && pilih <= no)
             {
                 pilih -= 1;
-                system("cls");
+                system("clear");
                 printf("\t\t\t\t ======================================================\n");
                 printf("\t\t\t\t ||               Data yang anda pilih               ||\n");
                 printf("\t\t\t\t ======================================================\n");
@@ -2086,7 +2086,7 @@ void hapusBarang(char *namaFile)
         fclose(fptemp);
         remove(namaFile);
         rename("temp.txt", namaFile);
-        system("cls");
+        system("clear");
         printf("\t\t\t\t ===================================================\n");
         printf("\t\t\t\t ||          Data telah berhasil dihapus  !       ||\n");
         printf("\t\t\t\t ===================================================\n");
@@ -2118,7 +2118,7 @@ void editBarang(char *namaFile)
     {
         while (true)
         {
-            system("cls");
+            system("clear");
             int i = 0, no = 1;
             fp = fopen(namaFile, "r");
             daftarBarang();
@@ -2142,7 +2142,7 @@ void editBarang(char *namaFile)
             else if (pilih >= 1 && pilih <= no)
             {
                 pilih -= 1;
-                system("cls");
+                system("clear");
                 printf("\t\t\t\t ======================================================\n");
                 printf("\t\t\t\t ||               Data yang anda pilih               || \n");
                 printf("\t\t\t\t ======================================================\n");
@@ -2237,7 +2237,7 @@ void editBarang(char *namaFile)
         fclose(fptemp);
         remove(namaFile);
         rename("temp.txt", namaFile);
-        system("cls");
+        system("clear");
         printf("\t\t\t\t ===================================================\n");
         printf("\t\t\t\t ||          Data telah berhasil diedit  !        ||\n");
         printf("\t\t\t\t ===================================================\n");
@@ -2271,7 +2271,7 @@ void totalTransaksi()
     struct tm tm = *localtime(&t);
     sprintf(waktu, "%d,%02d,%02d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
     sprintf(waktuStruk, "(%02d:%02d:%02d) %d-%02d-%02d", tm.tm_hour, tm.tm_min, tm.tm_sec, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
-    system("cls");
+    system("clear");
     printf("\t\t\t\t =============================================\n");
     printf("\t\t\t\t ||          Masukkan Nama Pembeli          ||\n");
     printf("\t\t\t\t =============================================\n");
@@ -2280,7 +2280,7 @@ void totalTransaksi()
     getchar();
     do
     {
-        system("cls");
+        system("clear");
         printf("\t\t\t\t ============================================================\n");
         printf("\t\t\t\t ||                  Keterangan Transaksi                  ||\n");
         printf("\t\t\t\t ============================================================\n");
@@ -2306,7 +2306,7 @@ void totalTransaksi()
         if (bayar >= total)
         {
             kembalian = bayar - total;
-            system("cls");
+            system("clear");
             printf("\t\t\t\t ======================================================\n");
             printf("\t\t\t\t ||          Terima Kasih Atas Pembelian Anda !      ||\n");
             printf("\t\t\t\t ======================================================\n");
@@ -2375,7 +2375,7 @@ void totalTransaksi()
     fprintf(fp, "%s", buff);
     fprintf(fp, "============================================================\n");
     fclose(fp);
-    system("cls");
+    system("clear");
     printf("\t\t\t\t ======================================================\n");
     printf("\t\t\t\t ||            Struk anda telah dicetak !            ||\n");
     printf("\t\t\t\t ======================================================\n");
@@ -2406,7 +2406,7 @@ void tambahBarang(char *kategori, char *namaFile)
         namaFile (digunakan untuk menentukan file kategori barang mana yang akan ditambah datanya)
         kategori (digunakan untuk instruksi dalam mengkonfirmasi dat kategori mana yang akan ditambahkan)
     */
-    system("cls");
+    system("clear");
     int cobalagi, pilih;
     char yakin;
     char namaG[100], hargaG[15], stokG[15];
@@ -2414,7 +2414,7 @@ void tambahBarang(char *kategori, char *namaFile)
     {
         while (true)
         {
-            system("cls");
+            system("clear");
             printf("\t\t\t\t ==============================================================\n");
             printf("\t\t\t\t ||    Konfirmasi menambah data barang ke kategori %s ?       \n", kategori);
             printf("\t\t\t\t ==============================================================\n");
@@ -2422,7 +2422,7 @@ void tambahBarang(char *kategori, char *namaFile)
             range_int(&pilih, 0, 1, "\t\t\t\t  >> ");
             if (pilih == 1)
             {
-                system("cls");
+                system("clear");
                 printf("\t\t\t\t =========================================================\n");
                 printf("\t\t\t\t ||      Masukkan nama barang yang akan ditambahkan     ||\n");
                 printf("\t\t\t\t =========================================================\n");
@@ -2443,7 +2443,7 @@ void tambahBarang(char *kategori, char *namaFile)
                 printf("\t\t\t\t  >> ");
                 scanf("%[^\n]", stokG);
                 getchar();
-                system("cls");
+                system("clear");
                 printf("\t\t\t\t ===================================================\n");
                 printf("\t\t\t\t || Apakah anda yakin ingin menambahkan barang     \n");
                 printf("\t\t\t\t || Dengan data dibawah pada Kategori %s ?         \n", kategori);
@@ -2467,7 +2467,7 @@ void tambahBarang(char *kategori, char *namaFile)
                 menulistBarang("Ditambah");
             }
         }
-        system("cls");
+        system("clear");
         fp = fopen(namaFile, "a");
         fprintf(fp, "%s,%s,%s\n", namaG, hargaG, stokG);
         fclose(fp);
@@ -2530,7 +2530,7 @@ int cobaLagiG(char *aksi)
         1 -> untuk menyatakan bahwa user ingin mengulangi aksi
         0 -> untuk menyatakan bahwa user tidak ingin mengulangi aksi
     */
-    system("cls");
+    system("clear");
     char yakin;
     printf("\t\t\t\t ========================================================\n");
     printf("\t\t\t\t ||    Apakah Anda Ingin %s Barang lagi ?  \n", aksi);
@@ -2562,7 +2562,7 @@ int konfirmasiBarang(char *nama, char *harga, char *stok)
         Return :
         jumlah -> banyak barang yg akan dibeli oleh user
     */
-    system("cls");
+    system("clear");
     int jumlah, status = 0, jumlahtemp = 0;
     int tersedia = atoi(stok);
     char yakin;
