@@ -68,8 +68,7 @@ void intro()
     printf("\t\t\t\t ======================================================\n");
     printf("\n\t\t\t\t           Tekan enter untuk melanjutkan....");
     getchar();
-    awalGudang();
-    // Menuju Menu login atau registrasi
+    login();
 }
 
 void awalCashier()
@@ -119,8 +118,7 @@ void awalCashier()
         input_yakin(&yakin);
         if (yakin == 'Y')
         {
-            // ke menu login
-            intro();
+            login();
         }
         else if (yakin == 'X')
         {
@@ -212,8 +210,7 @@ void awalGudang()
         input_yakin(&yakin);
         if (yakin == 'Y')
         {
-            // Ke menu login
-            intro();
+            login();
         }
         else if (yakin == 'X')
         {
@@ -293,9 +290,10 @@ void menulistBarang(char *aksi)
     printf("\t\t\t\t ||   [0]   || Kembali                               ||\n");
     printf("\t\t\t\t ||         ||                                       ||\n");
     printf("\t\t\t\t ======================================================\n");
+    printf("\t\t\t\t  Pilih 12 untuk Mengkonfirmasi Pembelian (bila ada) \n");
+    printf("\t\t\t\t  Atau Pilih 13 untuk Membatalkan Pembelian (bila ada) \n");
     printf("\t\t\t\t  Pilihan jenis barang untuk %s (1 -> 11) dan 0 untuk kembali \n", aksi);
-    printf("\t\t\t\t  Atau Pilih 12 untuk Mengkonfirmasi Pembelian (bila ada) \n");
-    range_int(&pilih, 0, 12, "\t\t\t\t  >> ");
+    range_int(&pilih, 0, 13, "\t\t\t\t  >> ");
     if (pilih == 0)
     {
         if (jenisLogin == 11)
@@ -357,6 +355,24 @@ void menulistBarang(char *aksi)
         {
             n--;
             totalTransaksi();
+        }
+        else
+        {
+            pesanSalah();
+            menulistBarang(aksi);
+        }
+    }
+    else if (pilih == 13)
+    {
+        if (n > 0)
+        {
+            n = 0;
+            printf("\t\t\t\t =========================================================\n");
+            printf("\t\t\t\t ||           Pembelian anda telah dibatalkan !         ||\n");
+            printf("\t\t\t\t =========================================================\n");
+            printf("\t\t\t\t              Tekan enter untuk melanjutkan...");
+            getchar();
+            awalCashier();
         }
         else
         {
@@ -509,8 +525,8 @@ void hapusBarang(char *namaFile)
                 i++;
             } while (!feof(fp));
             fclose(fp);
-            printf("\t\t\t\t Pilih data yang akan dihapus ( 1 -> %d ) atau ( 0 untuk kembali ) \n\t\t\t\t >> ", no - 1);
-            range_int(&pilih, 0, no - 1, "");
+            printf("\t\t\t\t Pilih data yang akan dihapus ( 1 -> %d ) atau ( 0 untuk kembali ) \n", no - 1);
+            range_int(&pilih, 0, no - 1, "\t\t\t\t >> ");
             if (pilih == 0)
             {
                 menulistBarang("Dihapus");
@@ -520,7 +536,7 @@ void hapusBarang(char *namaFile)
                 pilih -= 1;
                 system("clear");
                 printf("\t\t\t\t ======================================================\n");
-                printf("\t\t\t\t ||               Data yang anda pilih               || \n");
+                printf("\t\t\t\t ||               Data yang anda pilih               ||\n");
                 printf("\t\t\t\t ======================================================\n");
                 printf("\t\t\t\t || Nama Barang             : %s\n", z[pilih].nama);
                 printf("\t\t\t\t || Harga per unit          : Rp.%s,-\n", z[pilih].harga);
@@ -612,8 +628,8 @@ void editBarang(char *namaFile)
                 i++;
             } while (!feof(fp));
             fclose(fp);
-            printf("\t\t\t\t Pilih data yang akan diedit ( 1 -> %d ) atau ( 0 untuk kembali ) : ", no - 1);
-            range_int(&pilih, 0, no - 1, "");
+            printf("\t\t\t\t Pilih data yang akan diedit ( 1 -> %d ) atau ( 0 untuk kembali )\n", no - 1);
+            range_int(&pilih, 0, no - 1, "\t\t\t\t >> ");
             if (pilih == 0)
             {
                 menulistBarang("Diedit");
@@ -789,7 +805,10 @@ void totalTransaksi()
             printf("\t\t\t\t ======================================================\n");
             printf("\t\t\t\t ||          Terima Kasih Atas Pembelian Anda !      ||\n");
             printf("\t\t\t\t ======================================================\n");
-            printf("\t\t\t\t   Kembalian anda : Rp.%d,- \n", kembalian);
+            printf("\t\t\t\t || Kembalian anda : Rp.%d,- \n", kembalian);
+            printf("\t\t\t\t ======================================================\n");
+            printf("\t\t\t\t             Tekan enter untuk melanjutkan...");
+            getchar();
             break;
         }
         else
@@ -842,7 +861,7 @@ void totalTransaksi()
     sprintf(buff, "|| Pajak PPN (11%%)    : Rp.%d,- \n", pajak);
     fprintf(fp, "%s", buff);
     total = total + pajak;
-    sprintf(buff, "|| Total Keseluruhan : Rp.%d,- \n", total);
+    sprintf(buff, "|| Total Keseluruhan  : Rp.%d,- \n", total);
     fprintf(fp, "%s", buff);
     fprintf(fp, "============================================================\n");
     sprintf(buff, "|| Dibayar sebesar   : Rp.%d,- \n", bayar);
@@ -851,20 +870,21 @@ void totalTransaksi()
     fprintf(fp, "%s", buff);
     fprintf(fp, "============================================================\n");
     fclose(fp);
+    system("clear");
     printf("\t\t\t\t ======================================================\n");
     printf("\t\t\t\t ||            Struk anda telah dicetak !            ||\n");
     printf("\t\t\t\t ======================================================\n");
     printf("\t\t\t\t             Tekan enter untuk melanjutkan...");
     getchar();
     fp = fopen("riwayatpembelian.txt", "a");
-    fprintf(fp, "%s,", waktu);
     for (int i = 0; i <= n; i++)
     {
+        fprintf(fp, "%s,", waktu);
         sprintf(buff, "%s,%d,", *x[i].nama, x[i].jumlah);
         fprintf(fp, "%s", buff);
+        sprintf(buff, "%d", x[i].totalHarga);
+        fprintf(fp, "%s\n", buff);
     }
-    sprintf(buff, "%d", total - pajak);
-    fprintf(fp, "%s\n", buff);
     fclose(fp);
     n = 0;
 }
@@ -987,7 +1007,7 @@ void pesanSalah()
     printf(RED "\t\t\t\t =========================================================\n" COLOR_OFF);
     printf(RED "\t\t\t\t ||   Input Salah, Mohon Ikuti Petunjuk yang tersedia ! ||\n" COLOR_OFF);
     printf(RED "\t\t\t\t =========================================================\n" COLOR_OFF);
-    printf("\t\t\t\t               Tekan enter untuk melanjutkan...");
+    printf(RED "\t\t\t\t               Tekan enter untuk melanjutkan..." COLOR_OFF);
     getchar();
 }
 
@@ -1005,6 +1025,7 @@ int cobaLagiG(char *aksi)
         1 -> untuk menyatakan bahwa user ingin mengulangi aksi
         0 -> untuk menyatakan bahwa user tidak ingin mengulangi aksi
     */
+    system("clear");
     char yakin;
     printf("\t\t\t\t ========================================================\n");
     printf("\t\t\t\t ||    Apakah Anda Ingin %s Barang lagi ?  \n", aksi);
@@ -1037,7 +1058,7 @@ int konfirmasiBarang(char *nama, char *harga, char *stok)
         jumlah -> banyak barang yg akan dibeli oleh user
     */
     system("clear");
-    int jumlah, status, jumlahtemp = 0;
+    int jumlah, status = 0, jumlahtemp = 0;
     int tersedia = atoi(stok);
     char yakin;
     printf("\t\t\t\t =======================================================\n");
@@ -1085,7 +1106,14 @@ int konfirmasiBarang(char *nama, char *harga, char *stok)
             input_yakin(&yakin);
             if (yakin == 'Y')
             {
-                return jumlah;
+                if (status > 0)
+                {
+                    return jumlah - jumlahtemp;
+                }
+                else
+                {
+                    return jumlah;
+                }
             }
             else if (yakin = 'X')
             {
@@ -1104,6 +1132,27 @@ void daftarBarang() // Fungsi Untuk menampilkan header dari Daftar list barang
     printf("\t\t\t\t ==========================================================\n");
     printf("\t\t\t\t ||  Pilihan    ||              NAMA BARANG              ||\n");
     printf("\t\t\t\t ==========================================================\n");
+}
+
+void input_yakin(char *var) // Validasi Memasukkan ya(Y) atau tidak(X)
+{
+    char input[1024];
+    while (true)
+    {
+        printf("\t\t\t\t  Masukan y untuk iya atau x untuk tidak \n");
+        printf("\t\t\t\t  >> ");
+        scanf("%[^\n]", input);
+        getchar();
+        *var = toupper(*input);
+        if (strlen(input) <= 1)
+        {
+            if (*var == 88 || *var == 89)
+            {
+                break;
+            }
+        }
+        printf(RED "\t\t\t\tMaaf input salah, Mohon ikuti petunjuk ! \n" COLOR_OFF);
+    }
 }
 
 void input_int(int *var, char *intruksi) // Fungsi untuk input integer
@@ -1135,26 +1184,5 @@ void range_int(int *var, int range1, int range2, char *intruksi) // Fungsi untuk
         if (*var >= range1 && *var <= range2)
             break;
         printf(RED "\t\t\t\tMohon masukkan angka sesuai dengan petunjuk ! \n" COLOR_OFF);
-    }
-}
-
-void input_yakin(char *var) // Validasi Memasukkan ya(Y) atau tidak(X)
-{
-    char input[1024];
-    while (true)
-    {
-        printf("\t\t\t\t  Masukan y untuk iya atau x untuk tidak \n");
-        printf("\t\t\t\t  >> ");
-        scanf("%[^\n]", input);
-        getchar();
-        *var = toupper(*input);
-        if (strlen(input) <= 1)
-        {
-            if (*var == 88 || *var == 89)
-            {
-                break;
-            }
-        }
-        printf(RED "\t\t\t\tMaaf input salah, Mohon ikuti petunjuk ! \n" COLOR_OFF);
     }
 }
