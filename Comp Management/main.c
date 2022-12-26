@@ -2128,7 +2128,8 @@ void editBarang(char *namaFile)
         namaFile (digunakan untuk menentukan file kategori barang mana yang akan diedit datanya)
     */
     gudang y;
-    char namaBaru[100], hargaBaru[15], stokBaru[15];
+    char namaBaru[100], buff[1024];
+    int hargaBaru, stokBaru;
     char namaR[100], hargaR[15], stokR[15];
     int pilihEdit;
     int pilih, read, cobalagi, i, no;
@@ -2197,18 +2198,14 @@ void editBarang(char *namaFile)
                     printf("\t\t\t\t =======================================================\n");
                     printf("\t\t\t\t ||   Masukkan harga baru dari data yang anda pilih   ||\n");
                     printf("\t\t\t\t =======================================================\n");
-                    printf("\t\t\t\t >> Rp.");
-                    scanf("%[^\n]", hargaBaru);
-                    getchar();
+                    input_int(&hargaBaru, "\t\t\t\t >> Rp.");
                 }
                 else if (pilihEdit == 3)
                 {
                     printf("\t\t\t\t =========================================================\n");
                     printf("\t\t\t\t || Masukkan jumlah stok baru dari data yang anda pilih ||\n");
                     printf("\t\t\t\t =========================================================\n");
-                    printf("\t\t\t\t >> ");
-                    scanf("%[^\n]", stokBaru);
-                    getchar();
+                    input_int(&stokBaru, "\t\t\t\t >> ");
                 }
                 else if (pilihEdit == 0)
                 {
@@ -2247,11 +2244,13 @@ void editBarang(char *namaFile)
                     }
                     else if (pilihEdit == 2)
                     {
-                        fprintf(fptemp, "%s,%s,%s\n", namaR, hargaBaru, stokR);
+                        sprintf(buff, "%s,%d,%s\n", namaR, hargaBaru, stokR);
+                        fprintf(fptemp, "%s", buff);
                     }
                     else if (pilihEdit == 3)
                     {
-                        fprintf(fptemp, "%s,%s,%s\n", namaR, hargaR, stokBaru);
+                        sprintf(buff, "%s,%s,%d\n", namaR, hargaR, stokBaru);
+                        fprintf(fptemp, "%s", buff);
                     }
                 }
                 else
@@ -2436,7 +2435,8 @@ void tambahBarang(char *kategori, char *namaFile)
     system("clear");
     int cobalagi, pilih;
     char yakin;
-    char namaG[100], hargaG[15], stokG[15];
+    char namaG[100], buff[1024];
+    int hargaG, stokG;
     do
     {
         while (true)
@@ -2460,24 +2460,20 @@ void tambahBarang(char *kategori, char *namaFile)
                 printf("\t\t\t\t ||  Masukkan harga/unit dari barang dengan \n");
                 printf("\t\t\t\t ||  Nama : %s \n", namaG);
                 printf("\t\t\t\t =========================================================\n");
-                printf("\t\t\t\t  >> Rp.");
-                scanf("%[^\n]", hargaG);
-                getchar();
+                input_int(&hargaG, "\t\t\t\t  >> Rp.");
                 printf("\t\t\t\t =========================================================\n");
                 printf("\t\t\t\t || Masukkan banyak stok barang yang tersedia \n");
                 printf("\t\t\t\t || dari barang dengan Nama : %s \n", namaG);
                 printf("\t\t\t\t =========================================================\n");
-                printf("\t\t\t\t  >> ");
-                scanf("%[^\n]", stokG);
-                getchar();
+                input_int(&stokG, "\t\t\t\t  >> ");
                 system("clear");
                 printf("\t\t\t\t ===================================================\n");
                 printf("\t\t\t\t || Apakah anda yakin ingin menambahkan barang     \n");
                 printf("\t\t\t\t || Dengan data dibawah pada Kategori %s ?         \n", kategori);
                 printf("\t\t\t\t ===================================================\n");
                 printf("\t\t\t\t || Nama        : %s                \n", namaG);
-                printf("\t\t\t\t || Harga/unit  : Rp.%s,-                \n", hargaG);
-                printf("\t\t\t\t || Stok        : %s unit           \n", stokG);
+                printf("\t\t\t\t || Harga/unit  : Rp.%d,-                \n", hargaG);
+                printf("\t\t\t\t || Stok        : %d unit           \n", stokG);
                 printf("\t\t\t\t ===================================================\n");
                 input_yakin(&yakin);
                 if (yakin == 'Y')
@@ -2496,7 +2492,8 @@ void tambahBarang(char *kategori, char *namaFile)
         }
         system("clear");
         fp = fopen(namaFile, "a");
-        fprintf(fp, "%s,%s,%s\n", namaG, hargaG, stokG);
+        sprintf(buff, "%s,%d,%d\n", namaG, hargaG, stokG);
+        fprintf(fp, "%s", buff);
         fclose(fp);
         printf("\t\t\t\t ===================================================\n");
         printf("\t\t\t\t ||        Data telah berhasil ditambahkan !      ||\n");
