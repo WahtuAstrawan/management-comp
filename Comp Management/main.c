@@ -2214,17 +2214,13 @@ void editBarang(char *namaFile)
                 {
                     continue;
                 }
+                printf("\t\t\t\t ====================================================\n");
+                printf("\t\t\t\t ||   Apakah anda yakin mengedit barang diatas ?   ||\n");
+                printf("\t\t\t\t ====================================================\n");
                 input_yakin(&yakin);
                 if (yakin == 'Y')
                 {
-                    if (pilihEdit == 0)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    break;
                 }
                 else if (yakin == 'X')
                 {
