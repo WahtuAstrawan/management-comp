@@ -2593,7 +2593,7 @@ int konfirmasiBarang(char *nama, char *harga, char *stok)
         Return :
         jumlah -> banyak barang yg akan dibeli oleh user
     */
-    int jumlah, status = 0, jumlahtemp = 0;
+    int jumlah, status = 0, jumlahtemp;
     int tersedia = atoi(stok);
     char yakin, yakin1, yakin2, yakin3;
     system("clear");
@@ -2653,7 +2653,6 @@ int konfirmasiBarang(char *nama, char *harga, char *stok)
                 }
                 else if (yakin3 == 'X')
                 {
-                    jumlahtemp = 0;
                     continue;
                 }
             }
@@ -2671,7 +2670,6 @@ int konfirmasiBarang(char *nama, char *harga, char *stok)
                 }
                 else if (yakin2 == 'X')
                 {
-                    jumlahtemp = 0;
                     continue;
                 }
             }
