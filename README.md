@@ -7,7 +7,8 @@ Tujuan Program : -  Sebagai kasir, mengatur stok barang dan data-data barang pad
 
                  -  Memantau pendapatan dan trend barang bulan tertentu
 
-Untuk Program Utama terletak pada folder Comp Management
+Untuk Program Utama terletak pada folder Comp Management 
+(untuk menjalankan program dengan baik perlu mendownload semua file yang ada pada folder Comp Management)
 
 Nama : I Putu Liangga Ristiana Putra
 NIM  : 2205551067
