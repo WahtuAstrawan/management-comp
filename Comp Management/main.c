@@ -13,7 +13,7 @@
 
 // Pendeklarasian semua fungsi
 void intro(), awalCashier(), awalGudang(), menulistBarang(char *aksi), prosesBarang(char *namaFile, char *aksi),
-    hapusBarang(char *namaFile), editBarang(char *namaFile), totalTransaksi(), tambahBarang(char *kategori, char *namaFile),
+    hapusBarang(char *namaFile, char *aksi), editBarang(char *namaFile, char *aksi), totalTransaksi(), tambahBarang(char *kategori, char *namaFile),
     stokHabis(), pesanSalah(), daftarBarang(), input_int(int *var, char *intruksi), range_int(int *var, int range1, int range2, char *intruksi),
     input_yakin(char *var), login(),
     AdminSubProgram(),
@@ -38,11 +38,14 @@ void intro(), awalCashier(), awalGudang(), menulistBarang(char *aksi), prosesBar
 
 int cobaLagiG(char *aksi), konfirmasiBarang(char *nama, char *harga, char *stok), checkPassword(char *usernameInserted, char *jabatan),
     inputUsername(char *user), cekUser(char *nama), inputPassword(char *pass), gantiJabatan(char *newJabatan), gantiUsername(char *newUsername),
-    gantiPassword(char *newPassword);
+    gantiPassword(char *newPassword), modeLihat(char *aksi);
 
 // Pendeklarasian Semua Variabel dan Struct Global
 FILE *fp, *fp2, *fptemp;
 int n = 0, jenisLogin;
+char username[21];
+char waktu[100], waktuData[100], waktu2[100], waktuData2[100];
+
 typedef struct Barang
 {
     char *nama[100];
@@ -110,6 +113,8 @@ void login()
     printf("\t\t\t\t ======================================================\n");
     char usernameInserted[21];
     char subprogram[8];
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
     while (1)
     {
 
@@ -125,6 +130,9 @@ void login()
             }
             else if (!strcmp(subprogram, "kasir")) // sub program kasir
             {
+                strcpy(username, usernameInserted);
+                sprintf(waktu, "%d,%02d,%02d,%02d,%02d,", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900, tm.tm_hour, tm.tm_min);
+                strcpy(waktuData, waktu);
                 awalCashier();
             }
             else if (!strcmp(subprogram, "gudang")) // sub program gudang
@@ -136,7 +144,7 @@ void login()
                 managerSubProgram();
             }
 
-            printf("\t\t\t\tada sub program tidak diketahui"); // hanya untuk berjaga jaga saat ada subprogram aneh yang masuk
+            printf("\t\t\t\tAda sub program tidak diketahui"); // hanya untuk berjaga jaga saat ada subprogram aneh yang masuk
             exit(0);
         }
     }
@@ -591,7 +599,7 @@ void AdminDeleteAccount()
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
-    printf("\t\t\t\t Masukan Username Akun Yang Ingin Di Edit\n");
+    printf("\t\t\t\t Masukan Username Akun Yang Ingin Di Hapus\n");
     printf("\t\t\t\t (ketik 0 untuk kembali ke menu admin)");
     while (1) // validasi ketersedian akun yang akan di hapus
     {
@@ -1098,8 +1106,8 @@ void managerShowAccount()
         printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t  Pegawai Saat ini berjumlah %d Pegawai\n", kasir + manager + gudang);
-        printf("\t\t\t\t    - Kasir : %d Orang\n", kasir);
-        printf("\t\t\t\t    - Gudang : %d Orang\n", gudang);
+        printf("\t\t\t\t    - Kasir  : %d Orang\n", kasir);
+        printf("\t\t\t\t    - Gudang  : %d Orang\n", gudang);
         printf("\t\t\t\t    - Manager : %d Orang\n", manager);
         printf("\t\t\t\t==============================================\n");
         showAllAcc();
@@ -1599,13 +1607,17 @@ void awalCashier()
 {
     /*  Pembuat : Wahtu Astrawan
         Tanggal : 10/12/2022
-        Revisi  : -
+        Revisi  : menambahkan file baru yakni riwayat login, fungsinya untuk mentracking
+                  siapa kasir yang bertugas pada tanggal, jam, dan menit tertentu.
+                  kemudian pada jam dan menit berapa dia melakukan logout/berhenti bertugas.
         Catatan :
         fungsi ini digunakan untuk menampilkan tampilan
         dan menu cashier pada saat login atau masuk sebagai cashier
         yang didalamnya dapat melakukan transaksi costumer
     */
     system("clear");
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
     jenisLogin = 11;
     int pilih;
     char yakin;
@@ -1642,6 +1654,11 @@ void awalCashier()
         input_yakin(&yakin);
         if (yakin == 'Y')
         {
+            sprintf(waktu2, "%02d,%02d", tm.tm_hour, tm.tm_min);
+            strcpy(waktuData2, waktu2);
+            fp = fopen("riwayatlogin.txt", "a");
+            fprintf(fp, "%s%s,%s\n", waktuData, waktuData2, username);
+            fclose(fp);
             login();
         }
         else if (yakin == 'X')
@@ -1915,7 +1932,7 @@ void prosesBarang(char *namaFile, char *aksi)
 {
     /*  Pembuat : Wahtu Astrawan
         Tanggal : 11/12/2022
-        Revisi  : -
+        Revisi  : menambahkan fitur mencari barang untuk dilakukan transaksi
         Catatan :
         fungsi ini digunakan untuk menampilkan barang
         yang tersedia pada kategori barang tertentu untuk melakukan transaksi
@@ -1928,26 +1945,90 @@ void prosesBarang(char *namaFile, char *aksi)
     {
         barang a;
         int pilih, jumlah, stok, i, read, no;
-        char yakin;
+        int pilihLihat, status = 0, yakinCari;
+        char yakin, namaCari[100];
         do
         {
+            pilihLihat = modeLihat("Untuk Transaksi");
+            if (pilihLihat == 3)
+            {
+                menulistBarang("Transaksi");
+            }
             system("clear");
             i = 0, no = 1;
             fp = fopen(namaFile, "r");
-            daftarBarang();
+            if (pilihLihat == 1)
+            {
+                daftarBarang();
+            }
             do
             {
                 read = fscanf(fp, "%100[^,],%15[^,],%15[^\n]\n", a[i].nama, a[i].harga, a[i].stok);
-                printf("\t\t\t\t ||             || %s                                      \n", a[i].nama);
-                printf("\t\t\t\t ||     [%d]     || Harga/unit   : Rp.%s,-                  \n", no, a[i].harga);
-                printf("\t\t\t\t ||             || Jumlah Stok  : %s                       \n", a[i].stok);
-                printf("\t\t\t\t ==========================================================\n");
+                if (pilihLihat == 1)
+                {
+                    printf("\t\t\t\t ||             || %s                                      \n", a[i].nama);
+                    printf("\t\t\t\t ||     [%d]     || Harga/unit   : Rp.%s,-                  \n", no, a[i].harga);
+                    printf("\t\t\t\t ||             || Jumlah Stok  : %s                       \n", a[i].stok);
+                    printf("\t\t\t\t ==========================================================\n");
+                }
                 no++;
                 i++;
             } while (!feof(fp));
             fclose(fp);
-            printf("\t\t\t\t Pilihan anda ( 1 -> %d ) atau Pilih 0 untuk kembali \n", no - 1);
-            range_int(&pilih, 0, no - 1, "\t\t\t\t >> ");
+            if (pilihLihat == 1)
+            {
+                printf("\t\t\t\t Pilihan anda ( 1 -> %d ) atau Pilih 0 untuk kembali \n", no - 1);
+                range_int(&pilih, 0, no - 1, "\t\t\t\t >> ");
+            }
+            if (pilihLihat == 2)
+            {
+                do
+                {
+                    system("clear");
+                    printf("\t\t\t\t =========================================================\n");
+                    printf("\t\t\t\t ||         Masukkan Nama Barang yang akan dicari       ||\n");
+                    printf("\t\t\t\t ||       (Harus diperhatikan spasi dan huruf besar)    ||\n");
+                    printf("\t\t\t\t =========================================================\n");
+                    printf("\t\t\t\t >> ");
+                    scanf("%[^\n]", namaCari);
+                    getchar();
+                    printf("\t\t\t\t =================================================\n");
+                    printf("\t\t\t\t || Apakah anda yakin mencari barang dengan       \n");
+                    printf("\t\t\t\t || Nama : %s                                     \n", namaCari);
+                    printf("\t\t\t\t || Pada kategori %s                              \n", aksi);
+                    printf("\t\t\t\t || Untuk dilakukan Transaksi ?                   \n");
+                    printf("\t\t\t\t =================================================\n");
+                    printf("\t\t\t\t ||    [1]     || Yakin                         ||\n");
+                    printf("\t\t\t\t ||            ||                               ||\n");
+                    printf("\t\t\t\t =================================================\n");
+                    printf("\t\t\t\t ||    [0]     || Kembali                       ||\n");
+                    printf("\t\t\t\t ||            ||                               ||\n");
+                    printf("\t\t\t\t =================================================\n");
+                    range_int(&yakinCari, 0, 1, "\t\t\t\t >> ");
+                    if (yakinCari == 0)
+                    {
+                        menulistBarang("Transaksi");
+                    }
+                    for (int j = 0; j <= i; j++)
+                    {
+                        if (strcmp(a[j].nama, namaCari) == 0)
+                        {
+                            pilih = j;
+                            pilih += 1;
+                            status = 0;
+                            break;
+                        }
+                        else
+                        {
+                            status++;
+                        }
+                    }
+                    if (status > 0)
+                    {
+                        noneData();
+                    }
+                } while (status > 0);
+            }
             if (pilih == 0)
             {
                 menulistBarang("Transaksi");
@@ -2007,19 +2088,19 @@ void prosesBarang(char *namaFile, char *aksi)
     }
     else if (jenisLogin == 24)
     {
-        editBarang(namaFile);
+        editBarang(namaFile, aksi);
     }
     else if (jenisLogin == 25)
     {
-        hapusBarang(namaFile);
+        hapusBarang(namaFile, aksi);
     }
 }
 
-void hapusBarang(char *namaFile)
+void hapusBarang(char *namaFile, char *aksi)
 {
     /*  Pembuat : Wahtu Astrawan
         Tanggal : 12/12/2022
-        Revisi  : -
+        Revisi  : menambah fitur untuk mencari data untuk dihapus
         Catatan :
         fungsi ini digunakan untuk menghapus data barang yang ada pada file
         dengan nama sesuai dengan parameter namaFile
@@ -2027,30 +2108,95 @@ void hapusBarang(char *namaFile)
         namaFile (digunakan untuk menentukan file kategori barang mana yang akan dihapus datanya)
     */
     gudang z;
-    char namaR[100], hargaR[15], stokR[15];
-    int pilih, read, cobalagi, no, i;
+    char namaR[100], hargaR[15], stokR[15], namaCari[100];
+    int pilih, read, cobalagi, no, i, yakinCari;
+    int jenisLihat, status = 0;
     char yakin;
     do
     {
         while (true)
         {
+            // Revisi menambah fitur untuk mencari data untuk dihapus
+            jenisLihat = modeLihat("Untuk Dihapus");
+            if (jenisLihat == 3)
+            {
+                menulistBarang("Dihapus");
+            }
             system("clear");
             i = 0, no = 1;
             fp = fopen(namaFile, "r");
-            daftarBarang();
+            if (jenisLihat == 1)
+            {
+                daftarBarang();
+            }
             do
             {
                 read = fscanf(fp, "%100[^,],%15[^,],%15[^\n]\n", z[i].nama, z[i].harga, z[i].stok);
-                printf("\t\t\t\t ||             || %s                                      \n", z[i].nama);
-                printf("\t\t\t\t ||     [%d]     || Harga/unit   : Rp.%s,-                  \n", no, z[i].harga);
-                printf("\t\t\t\t ||             || Jumlah Stok  : %s                        \n", z[i].stok);
-                printf("\t\t\t\t ==========================================================\n");
+                if (jenisLihat == 1)
+                {
+                    printf("\t\t\t\t ||             || %s                                      \n", z[i].nama);
+                    printf("\t\t\t\t ||     [%d]     || Harga/unit   : Rp.%s,-                  \n", no, z[i].harga);
+                    printf("\t\t\t\t ||             || Jumlah Stok  : %s                        \n", z[i].stok);
+                    printf("\t\t\t\t ==========================================================\n");
+                }
                 no++;
                 i++;
             } while (!feof(fp));
             fclose(fp);
-            printf("\t\t\t\t Pilih data yang akan dihapus ( 1 -> %d ) atau ( 0 untuk kembali ) \n", no - 1);
-            range_int(&pilih, 0, no - 1, "\t\t\t\t >> ");
+            if (jenisLihat == 1)
+            {
+                printf("\t\t\t\t Pilih data yang akan dihapus ( 1 -> %d ) atau ( 0 untuk kembali ) \n", no - 1);
+                range_int(&pilih, 0, no - 1, "\t\t\t\t >> ");
+            }
+            else if (jenisLihat == 2)
+            {
+                do
+                {
+                    system("clear");
+                    printf("\t\t\t\t =========================================================\n");
+                    printf("\t\t\t\t ||         Masukkan Nama Barang yang akan dicari      ||\n");
+                    printf("\t\t\t\t ||       (Harus diperhatikan spasi dan huruf besar)    ||\n");
+                    printf("\t\t\t\t =========================================================\n");
+                    printf("\t\t\t\t >> ");
+                    scanf("%[^\n]", namaCari);
+                    getchar();
+                    printf("\t\t\t\t =================================================\n");
+                    printf("\t\t\t\t || Apakah anda yakin mencari barang dengan       \n");
+                    printf("\t\t\t\t || Nama : %s                                     \n", namaCari);
+                    printf("\t\t\t\t || Pada kategori %s                              \n", aksi);
+                    printf("\t\t\t\t || Untuk dihapus Datanya ?                       \n");
+                    printf("\t\t\t\t =================================================\n");
+                    printf("\t\t\t\t ||    [1]     || Yakin                         ||\n");
+                    printf("\t\t\t\t ||            ||                               ||\n");
+                    printf("\t\t\t\t =================================================\n");
+                    printf("\t\t\t\t ||    [0]     || Kembali                       ||\n");
+                    printf("\t\t\t\t ||            ||                               ||\n");
+                    printf("\t\t\t\t =================================================\n");
+                    range_int(&yakinCari, 0, 1, "\t\t\t\t >> ");
+                    if (yakinCari == 0)
+                    {
+                        menulistBarang("Dihapus");
+                    }
+                    for (int j = 0; j <= i; j++)
+                    {
+                        if (strcmp(z[j].nama, namaCari) == 0)
+                        {
+                            pilih = j;
+                            pilih += 1;
+                            status = 0;
+                            break;
+                        }
+                        else
+                        {
+                            status++;
+                        }
+                    }
+                    if (status > 0)
+                    {
+                        noneData();
+                    }
+                } while (status > 0);
+            }
             if (pilih == 0)
             {
                 menulistBarang("Dihapus");
@@ -2116,11 +2262,26 @@ void hapusBarang(char *namaFile)
     awalGudang();
 }
 
-void editBarang(char *namaFile)
+int modeLihat(char *aksi)
+{
+    int pilih;
+    system("clear");
+    printf("\t\t\t\t ====================================================\n");
+    printf("\t\t\t\t ||        Pilih Mode lihat barang %s                 \n", aksi);
+    printf("\t\t\t\t ====================================================\n");
+    printf("\t\t\t\t ||   [1]   || Tampilkan Semua Barang              ||\n");
+    printf("\t\t\t\t ||   [2]   || Cari Nama barang                    ||\n");
+    printf("\t\t\t\t ==================================================== \n");
+    printf("\t\t\t\t Atau pilih 3 untuk kembali \n");
+    range_int(&pilih, 1, 3, "\t\t\t\t >> ");
+    return pilih;
+}
+
+void editBarang(char *namaFile, char *aksi)
 {
     /*  Pembuat : Wahtu Astrawan
         Tanggal : 13/12/2022
-        Revisi  : -
+        Revisi  : menambah fitur untuk mencari data untuk diedit
         Catatan :
         fungsi ini digunakan untuk mengedit data barang yang ada pada file
         dengan nama sesuai dengan parameter namaFile
@@ -2128,8 +2289,8 @@ void editBarang(char *namaFile)
         namaFile (digunakan untuk menentukan file kategori barang mana yang akan diedit datanya)
     */
     gudang y;
-    char namaBaru[100], buff[1024];
-    int hargaBaru, stokBaru;
+    char namaBaru[100], buff[1024], namaCari[100];
+    int hargaBaru, stokBaru, pilihLihat, yakinCari, status = 0;
     char namaR[100], hargaR[15], stokR[15];
     int pilihEdit;
     int pilih, read, cobalagi, i, no;
@@ -2138,23 +2299,87 @@ void editBarang(char *namaFile)
     {
         while (true)
         {
+            // menambah fitur untuk mencari data untuk diedit
+            pilihLihat = modeLihat("Untuk Diedit");
+            if (pilihLihat == 3)
+            {
+                menulistBarang("Diedit");
+            }
             system("clear");
             i = 0, no = 1;
             fp = fopen(namaFile, "r");
-            daftarBarang();
+            if (pilihLihat == 1)
+            {
+                daftarBarang();
+            }
             do
             {
                 read = fscanf(fp, "%100[^,],%15[^,],%15[^\n]\n", y[i].nama, y[i].harga, y[i].stok);
-                printf("\t\t\t\t ||             || %s                                       \n", y[i].nama);
-                printf("\t\t\t\t ||     [%d]     || Harga/unit   : Rp.%s,-                  \n", no, y[i].harga);
-                printf("\t\t\t\t ||             || Jumlah Stok  : %s                        \n", y[i].stok);
-                printf("\t\t\t\t ==========================================================\n");
+                if (pilihLihat == 1)
+                {
+                    printf("\t\t\t\t ||             || %s                                       \n", y[i].nama);
+                    printf("\t\t\t\t ||     [%d]     || Harga/unit   : Rp.%s,-                  \n", no, y[i].harga);
+                    printf("\t\t\t\t ||             || Jumlah Stok  : %s                        \n", y[i].stok);
+                    printf("\t\t\t\t ==========================================================\n");
+                }
                 no++;
                 i++;
             } while (!feof(fp));
             fclose(fp);
-            printf("\t\t\t\t Pilih data yang akan diedit ( 1 -> %d ) atau ( 0 untuk kembali )\n", no - 1);
-            range_int(&pilih, 0, no - 1, "\t\t\t\t >> ");
+            if (pilihLihat == 1)
+            {
+                printf("\t\t\t\t Pilih data yang akan diedit ( 1 -> %d ) atau ( 0 untuk kembali )\n", no - 1);
+                range_int(&pilih, 0, no - 1, "\t\t\t\t >> ");
+            }
+            else if (pilihLihat == 2)
+            {
+                do
+                {
+                    system("clear");
+                    printf("\t\t\t\t =========================================================\n");
+                    printf("\t\t\t\t ||         Masukkan Nama Barang yang akan dicari       ||\n");
+                    printf("\t\t\t\t ||     (Harus diperhatikan spasi dan huruf besarnya)   ||\n");
+                    printf("\t\t\t\t =========================================================\n");
+                    printf("\t\t\t\t >> ");
+                    scanf("%[^\n]", namaCari);
+                    getchar();
+                    printf("\t\t\t\t =================================================\n");
+                    printf("\t\t\t\t || Apakah anda yakin mencari barang dengan       \n");
+                    printf("\t\t\t\t || Nama : %s                                     \n", namaCari);
+                    printf("\t\t\t\t || Pada kategori %s                              \n", aksi);
+                    printf("\t\t\t\t || Untuk diedit Datanya ?                        \n");
+                    printf("\t\t\t\t =================================================\n");
+                    printf("\t\t\t\t ||    [1]     || Yakin                         ||\n");
+                    printf("\t\t\t\t ||            ||                               ||\n");
+                    printf("\t\t\t\t =================================================\n");
+                    printf("\t\t\t\t ||    [0]     || Kembali                       ||\n");
+                    printf("\t\t\t\t ||            ||                               ||\n");
+                    printf("\t\t\t\t =================================================\n");
+                    range_int(&yakinCari, 0, 1, "\t\t\t\t >> ");
+                    if (yakinCari == 0)
+                    {
+                        menulistBarang("Diedit");
+                    }
+                    for (int j = 0; j <= i; j++)
+                    {
+                        if (strcmp(y[j].nama, namaCari) == 0)
+                        {
+                            pilih = j;
+                            pilih += 1;
+                            status = 0;
+                            break;
+                        }
+                        else
+                        {
+                            status++;
+                        }
+                    }
+                    if (status > 0)
+                    {
+                        noneData();
+                    }
+                } while (status > 0);
+            }
             if (pilih == 0)
             {
                 menulistBarang("Diedit");
@@ -2278,7 +2503,10 @@ void totalTransaksi()
 {
     /*  Pembuat : Wahtu Astrawan
         Tanggal : 12/12/2022
-        Revisi  : -
+        Revisi  : menambahkan nama kasir yang melayani pada struk transaksi, riwayat pembelian
+                  serta menambahkan file baru yakni riwayat struk berfungsi sebagai tracking sebuah riwayat transaksi terjadi
+                  pada tanggal berapa dan siapa kasir yang melayani dan juga siapa nama kostumer yang
+                  terlibat pada transaksi tersebut.
         Catatan :
         fungsi ini digunakan untuk menverifikasi pembelian bila sudah
         fix untuk melakukan transaksi pembelian, melakukan update ke stok barang yang tersedia,
@@ -2312,6 +2540,7 @@ void totalTransaksi()
         printf("\t\t\t\t ============================================================\n");
         printf("\t\t\t\t || Transaksi dengan nama : %s                               \n", namaPembeli);
         printf("\t\t\t\t || Waktu Transaksi       : %s                               \n", waktuStruk);
+        printf("\t\t\t\t || Kasir yang melayani   : %s                               \n", username);
         printf("\t\t\t\t ============================================================\n");
         for (int i = 0; i <= n; i++)
         {
@@ -2380,6 +2609,7 @@ void totalTransaksi()
     fprintf(fp, "============================================================\n");
     fprintf(fp, "|| Transaksi dengan nama : %s                               \n", namaPembeli);
     fprintf(fp, "|| Waktu Transaksi       : %s                               \n", waktuStruk);
+    fprintf(fp, "|| Kasir yang melayani   : %s                               \n", username);
     fprintf(fp, "============================================================\n");
     for (int i = 0; i <= n; i++)
     {
@@ -2414,8 +2644,11 @@ void totalTransaksi()
         sprintf(buff, "%s,%d,", *x[i].nama, x[i].jumlah);
         fprintf(fp, "%s", buff);
         sprintf(buff, "%d", x[i].totalHarga);
-        fprintf(fp, "%s\n", buff);
+        fprintf(fp, "%s,%s,%s\n", buff, username, namaPembeli);
     }
+    fclose(fp);
+    fp = fopen("riwayatstruk.txt", "a");
+    fprintf(fp, "%s,%s,%s\n", waktu, username, namaPembeli);
     fclose(fp);
     n = 0;
 }
@@ -2535,6 +2768,16 @@ void pesanSalah()
     */
     printf(RED "\t\t\t\t =========================================================\n" COLOR_OFF);
     printf(RED "\t\t\t\t ||   Input Salah, Mohon Ikuti Petunjuk yang tersedia ! ||\n" COLOR_OFF);
+    printf(RED "\t\t\t\t =========================================================\n" COLOR_OFF);
+    printf(RED "\t\t\t\t               Tekan enter untuk melanjutkan..." COLOR_OFF);
+    getchar();
+}
+
+void noneData()
+{
+    printf(RED "\t\t\t\t =========================================================\n" COLOR_OFF);
+    printf(RED "\t\t\t\t ||     Tidak ditemukan data dengan nama yang sama !    ||\n" COLOR_OFF);
+    printf(RED "\t\t\t\t ||         Silahkan Ulang Menginput Nama Barang        ||\n" COLOR_OFF);
     printf(RED "\t\t\t\t =========================================================\n" COLOR_OFF);
     printf(RED "\t\t\t\t               Tekan enter untuk melanjutkan..." COLOR_OFF);
     getchar();
