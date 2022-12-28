@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <time.h>
+#include <math.h>
 
 // Mendefinisikan untuk warna dan style dari text dan besar dari pajak PPN
 #define COLOR_OFF "\e[m"
@@ -27,6 +28,9 @@ void intro(), awalCashier(), awalGudang(), menulistBarang(char *aksi), prosesBar
     managerOften(),
     managerProfit(),
     managerOften(),
+    managerTransaksi(),
+    managerStruk(),
+    manegerRiwayatLogin(),
 
     editTempHis(char *barang, int jumlah),
     sortTemphis(),
@@ -80,7 +84,7 @@ void intro()
         fungsi ini digunakan untuk menampilkan tampilan
         nama program pada saat program dibuka
     */
-    system("clear");
+    system("cls");
     printf("\t\t\t\t ======================================================\n");
     printf("\t\t\t\t ||                                                  ||\n");
     printf("\t\t\t\t ||                                                  ||\n");
@@ -105,7 +109,7 @@ void login()
     dengan jabatan akun tersebut
 */
 {
-    system("clear");
+    system("cls");
     printf("\t\t\t\t ======================================================\n");
     printf("\t\t\t\t ||                                                  ||\n");
     printf("\t\t\t\t ||>>>>>>>>>>>>>>>>>> LOGIN ACCOUNT <<<<<<<<<<<<<<<<<||\n");
@@ -227,7 +231,7 @@ void AdminSubProgram()
 */
 {
     int Pilihan;
-    system("clear");
+    system("cls");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -294,7 +298,7 @@ void AdminCreateAccount()
 
     while (1)
     {
-        system("clear");
+        system("cls");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
         printf("\t\t\t\t==============================================\n");
@@ -315,7 +319,7 @@ void AdminCreateAccount()
         }
 
         // masukan password akun yang akan dibuat
-        system("clear");
+        system("cls");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
         printf("\t\t\t\t==============================================\n"); ///:
@@ -339,7 +343,7 @@ void AdminCreateAccount()
     while (1)
     {
         // masukan password akun yang akan dibuat
-        system("clear");
+        system("cls");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
         printf("\t\t\t\t==============================================\n");
@@ -365,7 +369,7 @@ void AdminCreateAccount()
     }
     addAcc(jabatan, username, password);
 
-    system("clear");
+    system("cls");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -415,7 +419,7 @@ void AdminEditAccount()
     char password[21];
 
     // program meminta user menginput username yang ingin di edit
-    system("clear");
+    system("cls");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -449,7 +453,7 @@ void AdminEditAccount()
 
         // memilih menu edit akun
         status = 0;
-        system("clear");
+        system("cls");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
         printf("\t\t\t\t==============================================\n");
@@ -531,7 +535,7 @@ void AdminEditAccount()
         remove("akunPass.txt");
         rename("tempAkun.txt", "akunPass.txt");
 
-        system("clear");
+        system("cls");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
         printf("\t\t\t\t==============================================\n");
@@ -550,7 +554,7 @@ void AdminEditAccount()
         }
         break;
     }
-    system("clear");
+    system("cls");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -595,7 +599,7 @@ void AdminDeleteAccount()
     int ulang;
 
     // program meminta user menginput username yang ingin di hapus
-    system("clear");
+    system("cls");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -623,7 +627,7 @@ void AdminDeleteAccount()
         printf(RED "\n\t\t\t\t\t\tAkun Tidak Ada!\n" COLOR_OFF);
     }
 
-    system("clear");
+    system("cls");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -658,7 +662,7 @@ void AdminDeleteAccount()
     remove("akunPass.txt");
     rename("tempAkun.txt", "akunPass.txt");
 
-    system("clear");
+    system("cls");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -887,7 +891,7 @@ int gantiJabatan(char *newJabatan)
 {
     int Pilihan;
     // memilih jabatan akun yang akan dibuat
-    system("clear");
+    system("cls");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -938,7 +942,7 @@ int gantiPassword(char *newPassword)
 */
 {
 
-    system("clear");
+    system("cls");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -971,7 +975,7 @@ int gantiUsername(char *newUsername)
     -   0 => pilihan disimpan sementara
 */
 {
-    system("clear");
+    system("cls");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t...............SUB PROGRAM ADMIN..............\n");
     printf("\t\t\t\t==============================================\n");
@@ -1008,26 +1012,34 @@ void positif_int(int *var, char *intruksi)
 void managerSubProgram()
 /*  Pembuat : Liangga
     Tanggal : 15/12/2022
-    Revisi  : -
+    Revisi  : 27/12/2022
+                - tambah riwayat transaksi
+                - tambah jumlah transaksi
+                - tambah riwayat login
+
     Catatan :
     -   prosedur ini merupakan sub program manager
     -   memiliki 3 menu yaitu daftar pegawai, pemasukan kotor, trend barang
+
 */
 {
     int Pilihan;
-    system("clear");
-    printf("\t\t\t\t==============================================\n");
-    printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
-    printf("\t\t\t\t==============================================\n");
-    printf("\t\t\t\t||                                          ||\n");
-    printf("\t\t\t\t|| [1] Daftar Pegawai                       ||\n");
-    printf("\t\t\t\t|| [2] Pemasukan kotor                      ||\n");
-    printf("\t\t\t\t|| [3] Trend Barang                         ||\n");
-    printf("\t\t\t\t|| [4] log out                              ||\n");
-    printf("\t\t\t\t||                       [0] Keluar Program ||\n");
-    printf("\t\t\t\t||                                          ||\n");
-    printf("\t\t\t\t==============================================\n");
-    range_int(&Pilihan, 0, 4, "\t\t\t\t>> ");
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t || [1] Daftar Pegawai                       ||\n");
+    printf("\t\t\t\t || [2] Pemasukan kotor                      ||\n");
+    printf("\t\t\t\t || [3] Trend Barang                         ||\n");
+    printf("\t\t\t\t || [4] Riwayat Transaksi                    ||\n");
+    printf("\t\t\t\t || [5] Jumlah Transaksi                     ||\n");
+    printf("\t\t\t\t || [6] Riwayat Login                        ||\n");
+    printf("\t\t\t\t || [7] log out                              ||\n");
+    printf("\t\t\t\t ||                       [0] Keluar Program ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ==============================================\n");
+    range_int(&Pilihan, 0, 7, "\t\t\t\t >> ");
     switch (Pilihan)
     {
     case 1:
@@ -1043,6 +1055,18 @@ void managerSubProgram()
         exit(0);
         break;
     case 4:
+        managerTransaksi();
+        exit(0);
+        break;
+    case 5:
+        managerStruk();
+        exit(0);
+        break;
+    case 6:
+        manegerRiwayatLogin();
+        exit(0);
+        break;
+    case 7:
         login();
         exit(0);
         break;
@@ -1087,7 +1111,7 @@ void managerShowAccount()
     } while (!feof(fAkun));
 
     fclose(fAkun);
-    system("clear");
+    system("cls");
     printf("\t\t\t\t==============================================\n");
     printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
     printf("\t\t\t\t==============================================\n");
@@ -1101,7 +1125,7 @@ void managerShowAccount()
     switch (Pilihan)
     {
     case 1:
-        system("clear");
+        system("cls");
         printf("\t\t\t\t==============================================\n");
         printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
         printf("\t\t\t\t==============================================\n");
@@ -1179,6 +1203,7 @@ void managerProfit()
 /*  Pembuat : Liangga
     Tanggal : 15/12/2022
     Revisi  : -
+
     Catatan :
     -   prosedur ini digunakan untuk menampilkan keuntungan pada bulan tertentu
         yang dipilih user
@@ -1195,44 +1220,46 @@ void managerProfit()
         jumlahBarang,
         harga;
     long int totalHarga = 0;
-    char barang[100];
+    char barang[100],
+        username[21],
+        customer[100];
 
     date(&tanggal, &bulan, &tahun);
 
     int Pilihan;
-    system("clear");
-    printf("\t\t\t\t==============================================\n");
-    printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
-    printf("\t\t\t\t==============================================\n");
-    printf("\t\t\t\t||                                          ||\n");
-    printf("\t\t\t\t|| [1] Pemasukan Bulan Ini                  ||\n");
-    printf("\t\t\t\t|| [2] Pemasukan Bulan Lalu                 ||\n");
-    printf("\t\t\t\t||                             [0] Kembali  ||\n");
-    printf("\t\t\t\t||                                          ||\n");
-    printf("\t\t\t\t==============================================\n");
-    range_int(&Pilihan, 0, 2, "\t\t\t\t>> ");
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t || [1] Pemasukan Bulan Ini                  ||\n");
+    printf("\t\t\t\t || [2] Pemasukan Bulan Lalu                 ||\n");
+    printf("\t\t\t\t ||                             [0] Kembali  ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ==============================================\n");
+    range_int(&Pilihan, 0, 2, "\t\t\t\t >> ");
 
     switch (Pilihan)
     {
     case 1:
-        system("clear");
-        printf("\t\t\t\t==============================================\n");
-        printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
-        printf("\t\t\t\t==============================================\n");
-        printf("\t\t\t\t  Pemasukan %d/%d\n", bulan, tahun);
+        system("cls");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t   Pemasukan %d/%d\n", bulan, tahun);
         break;
     case 2:
-        system("clear");
-        printf("\t\t\t\t==============================================\n");
-        printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
-        printf("\t\t\t\t==============================================\n");
-        printf("\t\t\t\t||                                          ||\n");
-        printf("\t\t\t\t||     Berapa Bulan Kebelakang?             ||\n");
-        printf("\t\t\t\t||                                          ||\n");
-        printf("\t\t\t\t||                             [0] Kembali  ||\n");
-        printf("\t\t\t\t||                                          ||\n");
-        printf("\t\t\t\t==============================================\n");
-        positif_int(&bulanLalu, "\t\t\t\t>> ");
+        system("cls");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t ||                                          ||\n");
+        printf("\t\t\t\t ||     Berapa Bulan Kebelakang?             ||\n");
+        printf("\t\t\t\t ||                                          ||\n");
+        printf("\t\t\t\t ||                             [0] Kembali  ||\n");
+        printf("\t\t\t\t ||                                          ||\n");
+        printf("\t\t\t\t ==============================================\n");
+        positif_int(&bulanLalu, "\t\t\t\t >> ");
         if (bulanLalu == 0)
         {
             managerProfit();
@@ -1240,11 +1267,11 @@ void managerProfit()
         }
         bulan -= bulanLalu % 12;
         tahun -= bulanLalu / 12;
-        system("clear");
-        printf("\t\t\t\t==============================================\n");
-        printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
-        printf("\t\t\t\t==============================================\n");
-        printf("\t\t\t\t  Pemasukan %d/%d\n", bulan, tahun);
+        system("cls");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t   Pemasukan %d/%d\n", bulan, tahun);
         break;
     case 0:
         managerSubProgram();
@@ -1257,7 +1284,7 @@ void managerProfit()
     // mulai proses penghitungan
     do
     {
-        fscanf(fHis, "%d,%d,%d,%[^,],%d,%d\n", &dateHis, &monHis, &yearHis, barang, &jumlahBarang, &harga);
+        fscanf(fHis, "%d,%d,%d,%[^,],%d,%d,%[^,],%[^\n]\n", &dateHis, &monHis, &yearHis, barang, &jumlahBarang, &harga, username,customer);
         if (bulan == monHis && tahun == yearHis)
         {
             totalHarga += harga;
@@ -1265,12 +1292,12 @@ void managerProfit()
 
     } while (!feof(fHis));
 
-    printf("\t\t\t\t\t RP. %d\n", totalHarga);
-    printf("\t\t\t\t\t  PPN  : Rp. %.1f\n", (((float)totalHarga) * 0.11));
+    printf("\t\t\t\t \t RP. %d\n", totalHarga);
+    printf("\t\t\t\t   PPN  : Rp. %.1f\n", (((float)totalHarga) * 0.11));
     fclose(fHis);
-    printf("\t\t\t\t==============================================\n");
+    printf("\n\t\t\t\t ==============================================\n");
     printf("\t\t\t\t  [1]kembali                         [0]Menu\n");
-    range_int(&Pilihan, 0, 1, "\t\t\t\t>> ");
+    range_int(&Pilihan, 0, 1, "\t\t\t\t >> ");
     switch (Pilihan)
     {
     case 1:
@@ -1290,6 +1317,7 @@ void managerOften()
 /*  Pembuat : Liangga
     Tanggal : 15/12/2022
     Revisi  : -
+
     Catatan :
     -   prosedur ini digunakan untuk menampilkan ranking barang yang sering dibeli(trend barang)
         pada bulan tertentu yang dipilih user
@@ -1307,40 +1335,42 @@ void managerOften()
         jumlahBarang, // menampung jumlah barang didalam riwayatpembelian.txt
         jumlahtarget, // menamapung jumlah barang didalam riwayatpembelianTemp.txt
         harga;
-    char barang[100],      // menampung nama barang didalam riwayatpembelian.txt
-        barangTarget[100]; // menamapung nama barang didalam riwayatpembelianTemp.txt
+    char barang[100], // menampung nama barang didalam riwayatpembelian.txt
+        barangTarget[100],
+        username[21],
+        customer[100]; // menamapung nama barang didalam riwayatpembelianTemp.txt
 
     date(&tanggal, &bulan, &tahun);
 
     int Pilihan;
-    system("clear");
-    printf("\t\t\t\t==============================================\n");
-    printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
-    printf("\t\t\t\t==============================================\n");
-    printf("\t\t\t\t||                                          ||\n");
-    printf("\t\t\t\t|| [1] Trend Bulan Ini                      ||\n");
-    printf("\t\t\t\t|| [2] Trend Bulan Lalu                     ||\n");
-    printf("\t\t\t\t||                             [0] Kembali  ||\n");
-    printf("\t\t\t\t||                                          ||\n");
-    printf("\t\t\t\t==============================================\n");
-    range_int(&Pilihan, 0, 2, "\t\t\t\t>> ");
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t || [1] Trend Bulan Ini                      ||\n");
+    printf("\t\t\t\t || [2] Trend Bulan Lalu                     ||\n");
+    printf("\t\t\t\t ||                             [0] Kembali  ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ==============================================\n");
+    range_int(&Pilihan, 0, 2, "\t\t\t\t  >> ");
 
     switch (Pilihan)
     {
     case 1:
         break;
     case 2:
-        system("clear");
-        printf("\t\t\t\t==============================================\n");
-        printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
-        printf("\t\t\t\t==============================================\n");
-        printf("\t\t\t\t||                                          ||\n");
-        printf("\t\t\t\t||     Berapa Bulan Kebelakang?             ||\n");
-        printf("\t\t\t\t||                                          ||\n");
-        printf("\t\t\t\t||                             [0] Kembali  ||\n");
-        printf("\t\t\t\t||                                          ||\n");
-        printf("\t\t\t\t==============================================\n");
-        positif_int(&bulanLalu, "\t\t\t\t>> ");
+        system("cls");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t ||                                          ||\n");
+        printf("\t\t\t\t ||     Berapa Bulan Kebelakang?             ||\n");
+        printf("\t\t\t\t ||                                          ||\n");
+        printf("\t\t\t\t ||                             [0] Kembali  ||\n");
+        printf("\t\t\t\t ||                                          ||\n");
+        printf("\t\t\t\t ==============================================\n");
+        positif_int(&bulanLalu, "\t\t\t\t  >> ");
         if (bulanLalu == 0)
         {
             managerOften();
@@ -1357,11 +1387,11 @@ void managerOften()
     default:
         break;
     }
-    system("clear");
-    printf("\t\t\t\t==============================================\n");
-    printf("\t\t\t\t..............SUB PROGRAM MANAGER.............\n");
-    printf("\t\t\t\t==============================================\n");
-    printf("\t\t\t\t  Trend Barang %d/%d\n", bulan, tahun);
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t   Trend Barang %d/%d\n", bulan, tahun);
 
     // mulai proses
     int pertama = 0, trend = 0,
@@ -1373,7 +1403,7 @@ void managerOften()
 
     while (!feof(fHis))
     {
-        fscanf(fHis, "%d,%d,%d,%[^,],%d,%d\n", &dateHis, &monHis, &yearHis, barang, &jumlahBarang, &harga);
+        fscanf(fHis, "%d,%d,%d,%[^,],%d,%d,%[^,],%[^\n]\n", &dateHis, &monHis, &yearHis, barang, &jumlahBarang, &harga, username, customer);
         if (bulan == monHis && tahun == yearHis) // hanya menerima data barang di tanggal yang ditentukan
         {
 
@@ -1418,7 +1448,7 @@ void managerOften()
     if (trend == 0)
     {
         fclose(app);
-        printf("\n\t\t\t\t\tBulan Ini Tidak Ada Pembelian\n");
+        printf("\n\t\t\t\t\t Bulan Ini Tidak Ada Pembelian\n");
     }
     else
     {
@@ -1429,15 +1459,15 @@ void managerOften()
         do
         {
             fscanf(read, "%[^,],%d\n", barangTarget, &jumlahtarget);
-            printf("\t\t\t\t  - %s\t(%d Unit)\n", barangTarget, jumlahtarget);
+            printf("\t\t\t\t   - %s\t(%d Unit)\n", barangTarget, jumlahtarget);
         } while (!feof(read));
         fclose(read);
     }
     remove("riwayatpembelianTemp.txt");
 
-    printf("\t\t\t\t==============================================\n");
-    printf("\t\t\t\t  [1]Ulang                           [0]Menu\n");
-    range_int(&Pilihan, 0, 1, "\t\t\t\t>> ");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t   [1]Ulang                           [0]Menu\n");
+    range_int(&Pilihan, 0, 1, "\t\t\t\t  >> ");
     if (Pilihan == 1)
     {
         managerOften();
@@ -1448,6 +1478,435 @@ void managerOften()
         managerSubProgram();
         exit(0);
     }
+}
+//
+void managerTransaksi()
+{
+    int tanggal, bulan, tahun;
+    int tanggalFile, bulanFile, tahunFile;
+    int jumlah, harga, totalHarga = 0;
+
+    FILE *fHis = fopen("riwayatpembelian.txt", "r");
+
+    char barang[100];
+    char username[21], customer[21], namaDicari[21];
+
+    int mode;
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ||     [1] Semua Pembelian                  ||\n");
+    printf("\t\t\t\t ||     [2] Berdasarkan Pegawai              ||\n");
+    printf("\t\t\t\t ||     [3] Berdasarkan Customer             ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ==============================================\n");
+    range_int(&mode, 1, 3, "\t\t\t\t  >> ");
+    if (mode > 1)
+    {
+        system("cls");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t ||                                          ||\n");
+        printf("\t\t\t\t ||     Masukan Nama Dicari!                 ||\n");
+        printf("\t\t\t\t ||                                          ||\n");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t >> ");
+        gets(namaDicari);
+    }
+
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ||     Masukan Tanggal Pembelian            ||\n");
+    printf("\t\t\t\t ||     (1 - 31)                             ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ==============================================\n");
+    range_int(&tanggal, 1, 31, "\t\t\t\t  >> ");
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ||     Masukan bulan Pembelian              ||\n");
+    printf("\t\t\t\t ||     (1 - 12)                             ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ==============================================\n");
+    range_int(&bulan, 1, 12, "\t\t\t\t  >> ");
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ||     Masukan tahun Pembelian              ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ==============================================\n");
+    positif_int(&tahun, "\t\t\t\t  >> ");
+
+    system("cls");
+    printf("\t\t\t\t Pembelian %d/%d/%d\n", tanggal, bulan, tahun);
+
+    switch (mode)
+    {
+    case 1:
+        while (!feof(fHis))
+        {
+            fscanf(fHis, "%d,%d,%d,%[^,],%d,%d,%[^,],%[^\n]\n", &tanggalFile, &bulanFile, &tahunFile, barang, &jumlah, &harga, username, customer);
+            if (bulan == bulanFile && tanggal == tanggalFile && tahun == tahunFile)
+            {
+                printf("\t\t\t\t %s x%d\n", barang, jumlah);
+                printf("\t\t\t\t Rp.%d\n", harga);
+                totalHarga += harga;
+            }
+        }
+        break;
+    case 2:
+        while (!feof(fHis))
+        {
+            fscanf(fHis, "%d,%d,%d,%[^,],%d,%d,%[^,],%[^\n]\n", &tanggalFile, &bulanFile, &tahunFile, barang, &jumlah, &harga, username, customer);
+            if (bulan == bulanFile && tanggal == tanggalFile && tahun == tahunFile && !strcmp(namaDicari, username))
+            {
+                printf("\t\t\t\t %s x%d\n", barang, jumlah);
+                printf("\t\t\t\t Rp.%d\n", harga);
+                totalHarga += harga;
+            }
+        }
+        break;
+    case 3:
+        while (!feof(fHis))
+        {
+            fscanf(fHis, "%d,%d,%d,%[^,],%d,%d,%[^,],%[^\n]\n", &tanggalFile, &bulanFile, &tahunFile, barang, &jumlah, &harga, username, customer);
+            if (bulan == bulanFile && tanggal == tanggalFile && tahun == tahunFile && !strcmp(namaDicari, customer))
+            {
+                printf("\t\t\t\t %s x%d\n", barang, jumlah);
+                printf("\t\t\t\t Rp.%d\n", harga);
+                totalHarga += harga;
+            }
+        }
+        break;
+
+    default:
+        break;
+    }
+    fclose(fHis);
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t Total : Rp. %d\n", totalHarga);
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t [1] Kembali\n");
+    int pilihan;
+    range_int(&pilihan, 1, 1, "\t\t\t\t >> ");
+    managerSubProgram();
+    exit(0);
+}
+
+void managerStruk()
+{
+    int tanggal, bulan, tahun;
+    int tanggalFile, bulanFile, tahunFile;
+    int total = 0;
+
+    FILE *fHis = fopen("riwayatstruk.txt", "r");
+
+    char username[21];
+    char customer[100],
+        namaDicari[100];
+
+    int mode;
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ||     [1] Semua Pembelian                  ||\n");
+    printf("\t\t\t\t ||     [2] Berdasarkan Pegawai              ||\n");
+    printf("\t\t\t\t ||     [3] Berdasarkan Customer             ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ==============================================\n");
+    range_int(&mode, 1, 3, "\t\t\t\t  >> ");
+    if (mode > 1)
+    {
+        system("cls");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t ||                                          ||\n");
+        printf("\t\t\t\t ||     Masukan Nama Dicari!                 ||\n");
+        printf("\t\t\t\t ||                                          ||\n");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t   >> ");
+        gets(namaDicari);
+    }
+
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ||     Masukan Tanggal Pembelian            ||\n");
+    printf("\t\t\t\t ||     (1 - 31)                             ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ==============================================\n");
+    range_int(&tanggal, 1, 31, "\t\t\t\t  >> ");
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ||     Masukan bulan Pembelian              ||\n");
+    printf("\t\t\t\t ||     (1 - 12)                             ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ==============================================\n");
+    range_int(&bulan, 1, 12, "\t\t\t\t  >> ");
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ||     Masukan tahun Pembelian              ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ==============================================\n");
+    positif_int(&tahun, "\t\t\t\t  >> ");
+
+    system("cls");
+    printf("\t\t\t\t Transaksi %d/%d/%d\n", tanggal, bulan, tahun);
+    printf("\t\t\t\t ==============================================\n");
+
+    switch (mode)
+    {
+    case 1:
+        while (!feof(fHis))
+        {
+            fscanf(fHis, "%d,%d,%d,%[^,],%[^\n]\n", &tanggalFile, &bulanFile, &tahunFile, username, customer);
+            if (bulan == bulanFile && tanggal == tanggalFile && tahun == tahunFile)
+            {
+                printf("\t\t\t\t Pembeli %s \n", customer);
+                printf("\t\t\t\t Kasir : %s \n\n", username);
+                total++;
+            }
+        }
+        break;
+    case 2:
+        while (!feof(fHis))
+        {
+            fscanf(fHis, "%d,%d,%d,%[^,],%[^\n]\n", &tanggalFile, &bulanFile, &tahunFile, username, customer);
+            if (bulan == bulanFile && tanggal == tanggalFile && tahun == tahunFile && !strcmp(namaDicari, username))
+            {
+                printf("\t\t\t\t Pembeli %s \n", customer);
+                printf("\t\t\t\t Kasir : %s \n\n", username);
+                total++;
+            }
+        }
+        break;
+    case 3:
+        while (!feof(fHis))
+        {
+            fscanf(fHis, "%d,%d,%d,%[^,],%[^\n]\n", &tanggalFile, &bulanFile, &tahunFile, username, customer);
+            if (bulan == bulanFile && tanggal == tanggalFile && tahun == tahunFile && !strcmp(namaDicari, customer))
+            {
+                printf("\t\t\t\t Pembeli %s \n", customer);
+                printf("\t\t\t\t Kasir : %s \n\n", username);
+                total++;
+            }
+        }
+        break;
+
+    default:
+        break;
+    }
+
+    fclose(fHis);
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t Total :  %d transaksi\n", total);
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t [1] Kembali\n");
+    int pilihan;
+    range_int(&pilihan, 1, 1, "\t\t\t\t >> ");
+    managerSubProgram();
+    exit(0);
+}
+
+void manegerRiwayatLogin()
+{
+    int tanggal, bulan, tahun;
+    int tanggalFile, bulanFile, tahunFile;
+    int jamIn, minIn;
+    int jamOut, minOut;
+
+    FILE *fHis = fopen("riwayatlogin.txt", "r");
+
+    char username[21],
+        namaDicari[100];
+
+    int mode;
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ||     [1] Semua Riwayat Login              ||\n");
+    printf("\t\t\t\t ||     [2] Salah satu pegawai               ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ==============================================\n");
+    range_int(&mode, 1, 2, "\t\t\t\t  >> ");
+    if (mode > 1)
+    {
+        system("cls");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t ||                                          ||\n");
+        printf("\t\t\t\t ||     Masukan Nama Dicari!                 ||\n");
+        printf("\t\t\t\t ||                                          ||\n");
+        printf("\t\t\t\t ==============================================\n");
+        printf("\t\t\t\t   >> ");
+        gets(namaDicari);
+    }
+
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ||     Masukan Tanggal Riwayat              ||\n");
+    printf("\t\t\t\t ||     (1 - 31)                             ||\n");
+    printf("\t\t\t\t ||     (ketik 0 untuk melihat perbulan)     ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ==============================================\n");
+    range_int(&tanggal, 0, 31, "\t\t\t\t  >> ");
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ||     Masukan bulan Riwayat                ||\n");
+    printf("\t\t\t\t ||     (1 - 12)                             ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ==============================================\n");
+    range_int(&bulan, 1, 12, "\t\t\t\t  >> ");
+    system("cls");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ..............SUB PROGRAM MANAGER.............\n");
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ||     Masukan tahun Riwayat                ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ||                                          ||\n");
+    printf("\t\t\t\t ==============================================\n");
+    positif_int(&tahun, "\t\t\t\t  >> ");
+
+    system("cls");
+    printf("\t\t\t\t Riwayat Login %d/%d/%d\n", tanggal, bulan, tahun);
+    printf("\t\t\t\t ==============================================\n");
+
+    switch (mode)
+    {
+    case 1:
+        while (!feof(fHis))
+        {
+            fscanf(fHis, "%d,%d,%d,%d,%d,%d,%d,%[^\n]\n", &tanggalFile, &bulanFile, &tahunFile, &jamIn, &minIn, &jamOut, &minOut, username);
+            if (bulan == bulanFile && tanggal == tanggalFile && tahun == tahunFile)
+            {
+                printf("\t\t\t\t  Username : %s\n", username);
+                if (minOut == 0)
+                {
+                    printf("\t\t\t\t  Jam      : %.2d:%.2d - %.2d:%.2d\n", jamIn, minIn, jamOut, minOut);
+                    printf("\t\t\t\t  Durasi   : %.2d Jam %.2d menit \n\n", jamOut - jamIn - 1, abs(60 - minIn));
+                }
+                else
+                {
+                    printf("\t\t\t\t  Jam      : %.2d:%.2d - %.2d:%.2d\n", jamIn, minIn, jamOut, minOut);
+                    printf("\t\t\t\t  Durasi   : %.2d Jam %.2d menit \n\n", jamOut - jamIn, abs(minOut - minIn));
+                }
+            }
+            else if (bulan == bulanFile && tanggal == 0 && tahun == tahunFile)
+            {
+                printf("\t\t\t\t  Username : %s\n", username);
+                printf("\t\t\t\t  Tanggal  : %.2d/%.2d/%d\n", tanggalFile,bulanFile,tahunFile);
+                if (minOut == 0)
+                {
+                    printf("\t\t\t\t  Jam      : %.2d:%.2d - %.2d:%.2d\n", jamIn, minIn, jamOut, minOut);
+                    printf("\t\t\t\t  Durasi   : %.2d Jam %.2d menit \n\n", jamOut - jamIn - 1, abs(60 - minIn));
+                }
+                else
+                {
+                    printf("\t\t\t\t  Jam      : %.2d:%.2d - %.2d:%.2d\n", jamIn, minIn, jamOut, minOut);
+                    printf("\t\t\t\t  Durasi   : %.2d Jam %.2d menit \n\n", jamOut - jamIn, abs(minOut - minIn));
+                }
+            }
+        }
+
+        break;
+    case 2:
+        int totalJam = 0, totalMenit = 0;
+        if (cekUser(namaDicari))
+        {
+            printf("\t\t\t\t  Username : %s\n", namaDicari);
+            printf("\t\t\t\t ==============================================\n");
+            while (!feof(fHis))
+            {
+                fscanf(fHis, "%d,%d,%d,%d,%d,%d,%d,%[^\n]\n", &tanggalFile, &bulanFile, &tahunFile, &jamIn, &minIn, &jamOut, &minOut, username);
+                if (bulan == bulanFile && tanggal == tanggalFile && tahun == tahunFile && !strcmp(namaDicari, username))
+                {
+
+                    if (minOut == 0)
+                    {
+                        printf("\t\t\t\t  Jam      : %.2d:%.2d - %.2d:%.2d\n", jamIn, minIn, jamOut, minOut);
+                        printf("\t\t\t\t  Durasi   : %.2d Jam %.2d menit \n\n", jamOut - jamIn - 1, abs(60 - minIn));
+                        totalJam += (jamOut - jamIn - 1);
+                        totalMenit += abs(60 - minIn);
+                    }
+                    else
+                    {
+                        printf("\t\t\t\t  Jam      : %.2d:%.2d - %.2d:%.2d\n", jamIn, minIn, jamOut, minOut);
+                        printf("\t\t\t\t  Durasi   : %.2d Jam %.2d menit \n\n", jamOut - jamIn, abs(minOut - minIn));
+                        totalJam += (jamOut - jamIn);
+                        totalMenit += abs(minOut - minIn);
+                    }
+                }
+                else if (bulan == bulanFile && tanggal == 0 && tahun == tahunFile && !strcmp(namaDicari, username))
+                {
+                    printf("\t\t\t\t  Tanggal  : %.2d/%.2d/%d\n", tanggalFile,bulanFile,tahunFile);
+                    if (minOut == 0)
+                    {
+                        printf("\t\t\t\t  Jam      : %.2d:%.2d - %.2d:%.2d\n", jamIn, minIn, jamOut, minOut);
+                        printf("\t\t\t\t  Durasi   : %.2d Jam %.2d menit \n\n", jamOut - jamIn - 1, abs(60 - minIn));
+                        totalJam += (jamOut - jamIn - 1);
+                        totalMenit += abs(60 - minIn);
+                    }
+                    else
+                    {
+                        printf("\t\t\t\t  Jam      : %.2d:%.2d - %.2d:%.2d\n", jamIn, minIn, jamOut, minOut);
+                        printf("\t\t\t\t  Durasi   : %.2d Jam %.2d menit \n\n", jamOut - jamIn, abs(minOut - minIn));
+                        totalJam += (jamOut - jamIn);
+                        totalMenit += abs(minOut - minIn);
+                    }
+                }
+            }
+            printf("\t\t\t\t ==============================================\n");
+            printf("\t\t\t\t  Total Durasi   : %.2d Jam %.2d menit \n", totalJam, totalMenit);
+        }
+        else
+        {
+            printf("\t\t\t\t  Username tidak ada\n");
+        }
+
+        break;
+
+    default:
+        break;
+    }
+    printf("\t\t\t\t ==============================================\n");
+    printf("\t\t\t\t [1] Kembali\n");
+    int pilihan;
+    range_int(&pilihan, 1, 1, "\t\t\t\t >> ");
+    managerSubProgram();
+    exit(0);
 }
 
 void date(int *tanggal, int *bulan, int *tahun)
@@ -1615,7 +2074,7 @@ void awalCashier()
         dan menu cashier pada saat login atau masuk sebagai cashier
         yang didalamnya dapat melakukan transaksi costumer
     */
-    system("clear");
+    system("cls");
     time_t t = time(NULL);
     struct tm tm = *localtime(&t);
     jenisLogin = 11;
@@ -1647,7 +2106,7 @@ void awalCashier()
     }
     else if (pilih == 2)
     {
-        system("clear");
+        system("cls");
         printf("\t\t\t\t ======================================================\n");
         printf("\t\t\t\t ||          Apakah anda yakin ingin logout ?        ||\n");
         printf("\t\t\t\t ======================================================\n");
@@ -1668,7 +2127,7 @@ void awalCashier()
     }
     else
     {
-        system("clear");
+        system("cls");
         printf("\t\t\t\t ======================================================\n");
         printf("\t\t\t\t ||          Apakah anda yakin ingin keluar ?        ||\n");
         printf("\t\t\t\t ======================================================\n");
@@ -1694,7 +2153,7 @@ void awalGudang()
         dan menu gudang pada saat login atau masuk sebagai gudang
         yang didalamnya terdapat pilihan untuk tambah, edit, dan hapus data barang
     */
-    system("clear");
+    system("cls");
     jenisLogin = 22;
     n = 0;
     int pilih;
@@ -1744,7 +2203,7 @@ void awalGudang()
     }
     else if (pilih == 4)
     {
-        system("clear");
+        system("cls");
         printf("\t\t\t\t ======================================================\n");
         printf("\t\t\t\t ||          Apakah anda yakin ingin logout ?        ||\n");
         printf("\t\t\t\t ======================================================\n");
@@ -1760,7 +2219,7 @@ void awalGudang()
     }
     else
     {
-        system("clear");
+        system("cls");
         printf("\t\t\t\t ======================================================\n");
         printf("\t\t\t\t ||          Apakah anda yakin ingin keluar ?        ||\n");
         printf("\t\t\t\t ======================================================\n");
@@ -1787,7 +2246,7 @@ void menulistBarang(char *aksi)
         Parameter : aksi (digunakan untuk memberikan instruksi proses apa yang akan dijalankan pada pilihan menu)
     */
     int pilih;
-    system("clear");
+    system("cls");
     printf("\t\t\t\t ======================================================\n");
     printf("\t\t\t\t ||                                                  ||\n");
     printf("\t\t\t\t ||................ LIST JENIS BARANG ...............||\n");
@@ -1954,7 +2413,7 @@ void prosesBarang(char *namaFile, char *aksi)
             {
                 menulistBarang("Transaksi");
             }
-            system("clear");
+            system("cls");
             i = 0, no = 1;
             fp = fopen(namaFile, "r");
             if (pilihLihat == 1)
@@ -1984,7 +2443,7 @@ void prosesBarang(char *namaFile, char *aksi)
             {
                 do
                 {
-                    system("clear");
+                    system("cls");
                     printf("\t\t\t\t =========================================================\n");
                     printf("\t\t\t\t ||         Masukkan Nama Barang yang akan dicari       ||\n");
                     printf("\t\t\t\t ||       (Harus diperhatikan spasi dan huruf besar)    ||\n");
@@ -2066,7 +2525,7 @@ void prosesBarang(char *namaFile, char *aksi)
                 pesanSalah();
             }
         } while (pilih < 0 || pilih > no);
-        system("clear");
+        system("cls");
         printf("\t\t\t\t =========================================================\n");
         printf("\t\t\t\t ||        Apakah Anda Ingin membeli barang lagi ?      ||\n");
         printf("\t\t\t\t =========================================================\n");
@@ -2122,7 +2581,7 @@ void hapusBarang(char *namaFile, char *aksi)
             {
                 menulistBarang("Dihapus");
             }
-            system("clear");
+            system("cls");
             i = 0, no = 1;
             fp = fopen(namaFile, "r");
             if (jenisLihat == 1)
@@ -2152,7 +2611,7 @@ void hapusBarang(char *namaFile, char *aksi)
             {
                 do
                 {
-                    system("clear");
+                    system("cls");
                     printf("\t\t\t\t =========================================================\n");
                     printf("\t\t\t\t ||         Masukkan Nama Barang yang akan dicari      ||\n");
                     printf("\t\t\t\t ||       (Harus diperhatikan spasi dan huruf besar)    ||\n");
@@ -2204,7 +2663,7 @@ void hapusBarang(char *namaFile, char *aksi)
             else if (pilih >= 1 && pilih <= no)
             {
                 pilih -= 1;
-                system("clear");
+                system("cls");
                 printf("\t\t\t\t ======================================================\n");
                 printf("\t\t\t\t ||               Data yang anda pilih               ||\n");
                 printf("\t\t\t\t ======================================================\n");
@@ -2251,7 +2710,7 @@ void hapusBarang(char *namaFile, char *aksi)
         fclose(fptemp);
         remove(namaFile);
         rename("temp.txt", namaFile);
-        system("clear");
+        system("cls");
         printf("\t\t\t\t ===================================================\n");
         printf("\t\t\t\t ||          Data telah berhasil dihapus  !       ||\n");
         printf("\t\t\t\t ===================================================\n");
@@ -2265,7 +2724,7 @@ void hapusBarang(char *namaFile, char *aksi)
 int modeLihat(char *aksi)
 {
     int pilih;
-    system("clear");
+    system("cls");
     printf("\t\t\t\t ====================================================\n");
     printf("\t\t\t\t ||        Pilih Mode lihat barang %s                 \n", aksi);
     printf("\t\t\t\t ====================================================\n");
@@ -2305,7 +2764,7 @@ void editBarang(char *namaFile, char *aksi)
             {
                 menulistBarang("Diedit");
             }
-            system("clear");
+            system("cls");
             i = 0, no = 1;
             fp = fopen(namaFile, "r");
             if (pilihLihat == 1)
@@ -2335,7 +2794,7 @@ void editBarang(char *namaFile, char *aksi)
             {
                 do
                 {
-                    system("clear");
+                    system("cls");
                     printf("\t\t\t\t =========================================================\n");
                     printf("\t\t\t\t ||         Masukkan Nama Barang yang akan dicari       ||\n");
                     printf("\t\t\t\t ||     (Harus diperhatikan spasi dan huruf besarnya)   ||\n");
@@ -2387,7 +2846,7 @@ void editBarang(char *namaFile, char *aksi)
             else if (pilih >= 1 && pilih <= no)
             {
                 pilih -= 1;
-                system("clear");
+                system("cls");
                 printf("\t\t\t\t ======================================================\n");
                 printf("\t\t\t\t ||               Data yang anda pilih               || \n");
                 printf("\t\t\t\t ======================================================\n");
@@ -2488,7 +2947,7 @@ void editBarang(char *namaFile, char *aksi)
         fclose(fptemp);
         remove(namaFile);
         rename("temp.txt", namaFile);
-        system("clear");
+        system("cls");
         printf("\t\t\t\t ===================================================\n");
         printf("\t\t\t\t ||          Data telah berhasil diedit  !        ||\n");
         printf("\t\t\t\t ===================================================\n");
@@ -2525,7 +2984,7 @@ void totalTransaksi()
     struct tm tm = *localtime(&t);
     sprintf(waktu, "%d,%02d,%02d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
     sprintf(waktuStruk, "(%02d:%02d:%02d) %d-%02d-%02d", tm.tm_hour, tm.tm_min, tm.tm_sec, tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
-    system("clear");
+    system("cls");
     printf("\t\t\t\t =============================================\n");
     printf("\t\t\t\t ||          Masukkan Nama Pembeli          ||\n");
     printf("\t\t\t\t =============================================\n");
@@ -2534,7 +2993,7 @@ void totalTransaksi()
     getchar();
     do
     {
-        system("clear");
+        system("cls");
         printf("\t\t\t\t ============================================================\n");
         printf("\t\t\t\t ||                  Keterangan Transaksi                  ||\n");
         printf("\t\t\t\t ============================================================\n");
@@ -2561,7 +3020,7 @@ void totalTransaksi()
         if (bayar >= total)
         {
             kembalian = bayar - total;
-            system("clear");
+            system("cls");
             printf("\t\t\t\t ======================================================\n");
             printf("\t\t\t\t ||          Terima Kasih Atas Pembelian Anda !      ||\n");
             printf("\t\t\t\t ======================================================\n");
@@ -2631,7 +3090,7 @@ void totalTransaksi()
     fprintf(fp, "%s", buff);
     fprintf(fp, "============================================================\n");
     fclose(fp);
-    system("clear");
+    system("cls");
     printf("\t\t\t\t ======================================================\n");
     printf("\t\t\t\t ||            Struk anda telah dicetak !            ||\n");
     printf("\t\t\t\t ======================================================\n");
@@ -2665,7 +3124,7 @@ void tambahBarang(char *kategori, char *namaFile)
         namaFile (digunakan untuk menentukan file kategori barang mana yang akan ditambah datanya)
         kategori (digunakan untuk instruksi dalam mengkonfirmasi dat kategori mana yang akan ditambahkan)
     */
-    system("clear");
+    system("cls");
     int cobalagi, pilih;
     char yakin;
     char namaG[100], buff[1024];
@@ -2674,7 +3133,7 @@ void tambahBarang(char *kategori, char *namaFile)
     {
         while (true)
         {
-            system("clear");
+            system("cls");
             printf("\t\t\t\t ==============================================================\n");
             printf("\t\t\t\t ||    Konfirmasi menambah data barang ke kategori %s ?       \n", kategori);
             printf("\t\t\t\t ==============================================================\n");
@@ -2682,7 +3141,7 @@ void tambahBarang(char *kategori, char *namaFile)
             range_int(&pilih, 0, 1, "\t\t\t\t  >> ");
             if (pilih == 1)
             {
-                system("clear");
+                system("cls");
                 printf("\t\t\t\t =========================================================\n");
                 printf("\t\t\t\t ||      Masukkan nama barang yang akan ditambahkan     ||\n");
                 printf("\t\t\t\t =========================================================\n");
@@ -2699,7 +3158,7 @@ void tambahBarang(char *kategori, char *namaFile)
                 printf("\t\t\t\t || dari barang dengan Nama : %s \n", namaG);
                 printf("\t\t\t\t =========================================================\n");
                 input_int(&stokG, "\t\t\t\t  >> ");
-                system("clear");
+                system("cls");
                 printf("\t\t\t\t ===================================================\n");
                 printf("\t\t\t\t || Apakah anda yakin ingin menambahkan barang     \n");
                 printf("\t\t\t\t || Dengan data dibawah pada Kategori %s ?         \n", kategori);
@@ -2723,7 +3182,7 @@ void tambahBarang(char *kategori, char *namaFile)
                 menulistBarang("Ditambah");
             }
         }
-        system("clear");
+        system("cls");
         fp = fopen(namaFile, "a");
         sprintf(buff, "%s,%d,%d\n", namaG, hargaG, stokG);
         fprintf(fp, "%s", buff);
@@ -2797,7 +3256,7 @@ int cobaLagiG(char *aksi)
         1 -> untuk menyatakan bahwa user ingin mengulangi aksi
         0 -> untuk menyatakan bahwa user tidak ingin mengulangi aksi
     */
-    system("clear");
+    system("cls");
     char yakin;
     printf("\t\t\t\t ========================================================\n");
     printf("\t\t\t\t ||    Apakah Anda Ingin %s Barang lagi ?  \n", aksi);
@@ -2832,7 +3291,7 @@ int konfirmasiBarang(char *nama, char *harga, char *stok)
     int jumlah, status = 0, jumlahtemp;
     int tersedia = atoi(stok);
     char yakin, yakin1, yakin2, yakin3;
-    system("clear");
+    system("cls");
     printf("\t\t\t\t =======================================================\n");
     printf("\t\t\t\t ||               Konfirmasi Pembelian                || \n");
     printf("\t\t\t\t =======================================================\n");
@@ -2847,7 +3306,7 @@ int konfirmasiBarang(char *nama, char *harga, char *stok)
         do
         {
             jumlahtemp = 0;
-            system("clear");
+            system("cls");
             printf("\t\t\t\t =======================================================\n");
             printf("\t\t\t\t ||               Konfirmasi Pembelian                || \n");
             printf("\t\t\t\t =======================================================\n");
