@@ -4,8 +4,7 @@ Nama Program   : COMPUTER MANAGEMENT
 
 
 Tujuan Program : -  Sebagai kasir, mengatur stok barang dan data-data barang pada Toko hardware komputer
-
-                 -  Memantau pendapatan dan trend barang bulan tertentu
+-  Memantau pendapatan dan trend barang bulan tertentu
 
 Untuk Program Utama terletak pada folder Comp Management 
 (untuk menjalankan program dengan baik perlu mendownload semua file yang ada pada folder Comp Management)
